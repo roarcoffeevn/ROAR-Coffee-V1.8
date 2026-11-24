@@ -14,6 +14,7 @@ import {
   Lock,
   PackageOpen,
   ScrollText,
+  Share2,
   Smartphone,
   Sparkles,
   Sprout,
@@ -21,6 +22,13 @@ import {
   Trophy,
   X,
 } from 'lucide-react';
+import {
+  buildCanonicalShareUrl,
+  buildFacebookShareHref,
+  buildInstagramCaption,
+  canUseNativeShare,
+  copyShareText,
+} from '../lib/socialShare';
 import { useI18n } from '../i18n/I18nContext';
 import { useStore } from '../context/StoreContext';
 import { fetchProductsWithFallback } from '../lib/staticFallback';
@@ -79,10 +87,13 @@ export const PlayGamesPage: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [copiedCode, setCopiedCode] = useState<string>('');
+  const [shareCopied, setShareCopied] = useState(false);
   const [resultModal, setResultModal] = useState<{
     isDemo: boolean;
     reward: GameRewardRecord;
     claimCode?: string;
+    gameKey?: GameKey;
+    score?: number;
   } | null>(null);
 
   const loadGamesData = useCallback(async () => {
@@ -151,12 +162,16 @@ export const PlayGamesPage: React.FC = () => {
 
     if (d.won && d.reward) {
       const code = d.promoCode || d.claim?.claim_code || '';
+      const resolvedScore = Number(d.score ?? score ?? 0);
       const delayMs = gameKey === 'wheel' ? 4200 : gameKey === 'fortune' ? 1600 : 250;
       window.setTimeout(() => {
+        setShareCopied(false);
         setResultModal({
           isDemo: false,
           reward: d.reward,
           claimCode: code,
+          gameKey,
+          score: resolvedScore > 0 ? resolvedScore : undefined,
         });
       }, delayMs);
     } else if (!d.won) {
@@ -171,9 +186,11 @@ export const PlayGamesPage: React.FC = () => {
   };
 
   const handleDemoResult = (reward: GameRewardRecord) => {
+    setShareCopied(false);
     setResultModal({
       isDemo: true,
       reward,
+      gameKey: activeGame,
     });
   };
 
@@ -691,6 +708,15 @@ export const PlayGamesPage: React.FC = () => {
                 </div>
               )}
 
+              {resultModal.score && resultModal.score > 0 && (
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-[#00552B]/10 dark:bg-[#C6A667]/15 text-[#00552B] dark:text-[#C6A667] text-xs font-bold tabular-nums">
+                  <Trophy className="w-3.5 h-3.5" />
+                  <span>
+                    {t(`Thành tích: ${resultModal.score} điểm`, `Score: ${resultModal.score} pts`)}
+                  </span>
+                </div>
+              )}
+
               {!resultModal.isDemo && resultModal.claimCode && resultModal.reward.reward_type !== 'points' && (
                 <div className="p-3 rounded-xl bg-[#F8F5EF] dark:bg-[#0E1512] border border-dashed border-[#00552B]/40 dark:border-[#C6A667]/40 space-y-2">
                   <div className="text-[10px] uppercase tracking-wider font-bold text-[#202020]/60 dark:text-[#F1EFEA]/60">
@@ -713,7 +739,112 @@ export const PlayGamesPage: React.FC = () => {
               )}
             </div>
 
-            <div className="flex flex-wrap items-center justify-center gap-2.5 pt-2">
+            {(() => {
+              const matchedGameMeta = gameMetaList.find((g) => g.key === (resultModal.gameKey || activeGame));
+              const gameTitle = matchedGameMeta
+                ? lang === 'en'
+                  ? matchedGameMeta.shortEn
+                  : matchedGameMeta.shortVi
+                : 'ROAR COFFEE Play & Win';
+              const rewardLabel = lang === 'en' ? resultModal.reward.label_en : resultModal.reward.label_vi;
+              const scoreSnippet =
+                resultModal.score && resultModal.score > 0
+                  ? lang === 'en'
+                    ? ` (Score: ${resultModal.score} pts)`
+                    : ` (Đạt ${resultModal.score} điểm)`
+                  : '';
+              const shareUrl = buildCanonicalShareUrl(localePath('/play'));
+              const shareText =
+                lang === 'en'
+                  ? `I just played ${gameTitle} at ROAR COFFEE®${scoreSnippet} and won: ${rewardLabel}! Try your luck today.`
+                  : `Mình vừa chơi ${gameTitle} tại ROAR COFFEE®${scoreSnippet} và trúng: ${rewardLabel}! Vào thử vận may ngay nhé.`;
+              const sharePayload = {
+                url: shareUrl,
+                title: `ROAR COFFEE® — ${gameTitle}`,
+                text: shareText,
+                hashtags: ['ROARCOFFEE', 'RoarPlayAndWin', 'CaPheVietNam'],
+              };
+              const fbHref = buildFacebookShareHref(sharePayload);
+              const igCaption = buildInstagramCaption(sharePayload);
+
+              return (
+                <div className="pt-3 border-t border-[#202020]/10 dark:border-white/10 space-y-2.5">
+                  <div className="text-[11px] font-bold uppercase tracking-[0.12em] text-center text-[#202020]/60 dark:text-[#F1EFEA]/60">
+                    {t('Khoe chiến tích & nhận lộc cùng bạn bè', 'Share your score & winnings')}
+                  </div>
+                  <div className="grid grid-cols-3 gap-2">
+                    <a
+                      href={fbHref}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center justify-center gap-1.5 px-2.5 py-2 rounded-lg border border-[#1877F2]/30 bg-[#1877F2]/10 hover:bg-[#1877F2]/20 text-[#1877F2] dark:text-[#60A5FA] text-xs font-bold whitespace-nowrap shrink-0 transition-colors"
+                    >
+                      <svg className="w-3.5 h-3.5 shrink-0 fill-current" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M13.5 21v-7.5h2.5l.4-3h-2.9V8.6c0-.9.3-1.5 1.5-1.5h1.6V4.4c-.3 0-1.2-.1-2.3-.1-2.3 0-3.8 1.4-3.8 4v2.2H8v3h2.5V21h3z" />
+                      </svg>
+                      <span>Facebook</span>
+                    </a>
+
+                    <a
+                      href="https://www.instagram.com/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={async () => {
+                        await copyShareText(igCaption);
+                        setShareCopied(true);
+                        showToast(
+                          t(
+                            'Đã sao chép kết quả & hashtag! Dán lên Instagram Story hoặc bài viết nhé.',
+                            'Result caption & hashtags copied! Paste into your Instagram post or Story.'
+                          )
+                        );
+                        window.setTimeout(() => setShareCopied(false), 2500);
+                      }}
+                      className="inline-flex items-center justify-center gap-1.5 px-2.5 py-2 rounded-lg border border-[#E1306C]/30 bg-[#E1306C]/10 hover:bg-[#E1306C]/20 text-[#C13584] dark:text-[#F472B6] text-xs font-bold whitespace-nowrap shrink-0 transition-colors"
+                    >
+                      <svg className="w-3.5 h-3.5 shrink-0 fill-none stroke-current" strokeWidth="2" viewBox="0 0 24 24" aria-hidden="true">
+                        <rect x="3" y="3" width="18" height="18" rx="5" />
+                        <circle cx="12" cy="12" r="4" />
+                        <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
+                      </svg>
+                      <span>Instagram</span>
+                    </a>
+
+                    <button
+                      type="button"
+                      onClick={async () => {
+                        if (canUseNativeShare()) {
+                          try {
+                            await navigator.share({
+                              title: sharePayload.title,
+                              text: sharePayload.text,
+                              url: sharePayload.url,
+                            });
+                            return;
+                          } catch {
+                            // User cancelled or unsupported fallback to clipboard
+                          }
+                        }
+                        await copyShareText(`${shareText}\n${shareUrl}`);
+                        setShareCopied(true);
+                        showToast(t('Đã sao chép kết quả & liên kết!', 'Copied result & link!'));
+                        window.setTimeout(() => setShareCopied(false), 2500);
+                      }}
+                      className="inline-flex items-center justify-center gap-1.5 px-2.5 py-2 rounded-lg border border-[#202020]/15 dark:border-white/15 bg-[#F8F5EF] dark:bg-[#0E1512] hover:border-[#00552B] dark:hover:border-[#C6A667] text-[#202020] dark:text-[#F1EFEA] text-xs font-bold whitespace-nowrap shrink-0 cursor-pointer transition-colors"
+                    >
+                      {shareCopied ? (
+                        <Check className="w-3.5 h-3.5 text-[#00552B] dark:text-[#C6A667] shrink-0" />
+                      ) : (
+                        <Share2 className="w-3.5 h-3.5 shrink-0" />
+                      )}
+                      <span>{shareCopied ? t('Đã chép', 'Copied') : t('Chia sẻ', 'Share')}</span>
+                    </button>
+                  </div>
+                </div>
+              );
+            })()}
+
+            <div className="flex flex-wrap items-center justify-center gap-2.5 pt-1">
               {resultModal.isDemo ? (
                 <button
                   type="button"

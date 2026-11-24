@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { ArrowLeft, Check, ChevronDown, ChevronLeft, ChevronRight, Expand, Gift, Heart, HelpCircle, ShieldAlert, Star, X } from 'lucide-react';
+import { ArrowLeft, Check, ChevronDown, ChevronLeft, ChevronRight, Expand, Gift, Heart, HelpCircle, Link2, Share2, ShieldAlert, Star, X } from 'lucide-react';
 import { B2BInquiryModal } from '../components/B2BInquiryModal';
 import { GiftVoucherModal } from '../components/GiftVoucherModal';
 import { RecentlyViewedStrip, recordRecentlyViewed } from '../components/RecentlyViewedStrip';
@@ -12,6 +12,13 @@ import { localizeBrewingMethod, localizeCoffeeType, localizeVariantLabel } from 
 import { resolveVolumeTier } from '../lib/pricing';
 import { updateCustomSeoHead, upsertJsonLd } from '../lib/routeSeo';
 import { fetchProductBySlugWithFallback, fetchProductsWithFallback } from '../lib/staticFallback';
+import {
+  buildCanonicalShareUrl,
+  buildFacebookShareHref,
+  buildInstagramCaption,
+  canUseNativeShare,
+  copyShareText,
+} from '../lib/socialShare';
 
 export const ProductDetailPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -46,6 +53,7 @@ export const ProductDetailPage: React.FC = () => {
   const [giftModalMode, setGiftModalMode] = useState<'self' | 'gift'>('gift');
   const [voucherCatalog, setVoucherCatalog] = useState<Product[]>([]);
   const [openFaqIdx, setOpenFaqIdx] = useState<number | null>(0);
+  const [linkCopied, setLinkCopied] = useState(false);
 
   const fetchProduct = () => {
     if (!slug) return;
@@ -776,6 +784,108 @@ export const ProductDetailPage: React.FC = () => {
               </div>
             </div>
           )}
+
+          {/* Share Product Links */}
+          {(() => {
+            const productUrl = buildCanonicalShareUrl(localePath(`/product/${product.slug}`));
+            const productName = lang === 'vi' ? product.name_vi : product.name_en;
+            const productPriceLabel = formatPrice(effectiveUnitVnd, effectiveUnitUsd);
+            const sharePayload = {
+              url: productUrl,
+              title: `${productName} — ROAR COFFEE®`,
+              text:
+                lang === 'vi'
+                  ? `Khám phá ${productName} (${productPriceLabel}) tại ROAR COFFEE®`
+                  : `Discover ${productName} (${productPriceLabel}) at ROAR COFFEE®`,
+              hashtags: ['ROARCOFFEE', 'CaPheVietNam', 'SpecialtyCoffee'],
+            };
+            const fbHref = buildFacebookShareHref(sharePayload);
+            const igCaption = buildInstagramCaption(sharePayload);
+
+            return (
+              <div className="pt-3 border-t border-[#202020]/10 dark:border-white/10 flex flex-wrap items-center justify-between gap-2.5">
+                <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#202020]/70 dark:text-[#F1EFEA]/70 whitespace-nowrap shrink-0">
+                  <Share2 className="w-3.5 h-3.5 text-[#00552B] dark:text-[#C6A667]" />
+                  <span>{t('Chia sẻ sản phẩm', 'Share Product')}</span>
+                </span>
+                <div className="flex flex-wrap items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={async () => {
+                      await copyShareText(productUrl);
+                      setLinkCopied(true);
+                      showToast(t('Đã sao chép liên kết sản phẩm!', 'Product link copied!'));
+                      window.setTimeout(() => setLinkCopied(false), 2500);
+                    }}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded border border-[#202020]/15 dark:border-white/15 bg-[#F8F5EF] dark:bg-[#0E1512] hover:border-[#00552B] dark:hover:border-[#C6A667] text-[#202020] dark:text-[#F1EFEA] text-xs font-semibold whitespace-nowrap shrink-0 cursor-pointer transition-colors"
+                  >
+                    {linkCopied ? (
+                      <Check className="w-3.5 h-3.5 text-[#00552B] dark:text-[#C6A667] shrink-0" />
+                    ) : (
+                      <Link2 className="w-3.5 h-3.5 shrink-0" />
+                    )}
+                    <span>{linkCopied ? t('Đã chép link', 'Copied') : t('Chép link', 'Copy Link')}</span>
+                  </button>
+
+                  <a
+                    href={fbHref}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded border border-[#1877F2]/30 bg-[#1877F2]/10 hover:bg-[#1877F2]/20 text-[#1877F2] dark:text-[#60A5FA] text-xs font-semibold whitespace-nowrap shrink-0 transition-colors"
+                  >
+                    <svg className="w-3.5 h-3.5 shrink-0 fill-current" viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M13.5 21v-7.5h2.5l.4-3h-2.9V8.6c0-.9.3-1.5 1.5-1.5h1.6V4.4c-.3 0-1.2-.1-2.3-.1-2.3 0-3.8 1.4-3.8 4v2.2H8v3h2.5V21h3z" />
+                    </svg>
+                    <span>Facebook</span>
+                  </a>
+
+                  <a
+                    href="https://www.instagram.com/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={async () => {
+                      await copyShareText(igCaption);
+                      showToast(
+                        t(
+                          'Đã sao chép thông tin & link sản phẩm! Dán lên Instagram nhé.',
+                          'Product details & link copied! Ready to paste on Instagram.'
+                        )
+                      );
+                    }}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded border border-[#E1306C]/30 bg-[#E1306C]/10 hover:bg-[#E1306C]/20 text-[#C13584] dark:text-[#F472B6] text-xs font-semibold whitespace-nowrap shrink-0 transition-colors"
+                  >
+                    <svg className="w-3.5 h-3.5 shrink-0 fill-none stroke-current" strokeWidth="2" viewBox="0 0 24 24" aria-hidden="true">
+                      <rect x="3" y="3" width="18" height="18" rx="5" />
+                      <circle cx="12" cy="12" r="4" />
+                      <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
+                    </svg>
+                    <span>Instagram</span>
+                  </a>
+
+                  {canUseNativeShare() && (
+                    <button
+                      type="button"
+                      onClick={async () => {
+                        try {
+                          await navigator.share({
+                            title: sharePayload.title,
+                            text: sharePayload.text,
+                            url: sharePayload.url,
+                          });
+                        } catch {
+                          // Ignore cancelled native share
+                        }
+                      }}
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded border border-[#00552B]/30 dark:border-[#C6A667]/30 text-[#00552B] dark:text-[#C6A667] hover:bg-[#00552B]/10 dark:hover:bg-[#C6A667]/10 text-xs font-semibold whitespace-nowrap shrink-0 cursor-pointer transition-colors"
+                    >
+                      <Share2 className="w-3.5 h-3.5 shrink-0" />
+                      <span>{t('Khác', 'More')}</span>
+                    </button>
+                  )}
+                </div>
+              </div>
+            );
+          })()}
 
           {/* Technical / Spec Details */}
           <div className="pt-4 border-t border-[#202020]/10 dark:border-white/10 space-y-2.5 text-xs">

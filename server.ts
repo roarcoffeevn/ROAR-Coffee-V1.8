@@ -4,7 +4,6 @@ import fs from 'node:fs';
 import http from 'node:http';
 import path from 'node:path';
 import express from 'express';
-import { createServer as createViteServer } from 'vite';
 import {
   ADMIN_ROLE_PRESETS,
   ALL_ADMIN_PERMISSIONS,
@@ -63,7 +62,7 @@ const envPort = Number(process.env.PORT);
 const PORT =
   Number.isFinite(cliPort) && cliPort > 0
     ? cliPort
-    : !IS_PROD && envPort === 8080
+    : envPort === 8080
       ? 3000
       : envPort || 3000;
 const UPLOADS_DIR = path.resolve(process.cwd(), 'public/uploads');
@@ -5160,6 +5159,10 @@ app.post('/api/admin/exchange-rate/vietcombank/sync', requirePermission('product
   res.json({ ok: true, rate, updatedProducts });
 });
 
+app.get('/api/health', (_req, res) => {
+  res.status(200).json({ ok: true, env: IS_PROD ? 'production' : 'development' });
+});
+
 // ---------- VITE / STATIC SERVING ----------
 async function startServer() {
   const httpServer = http.createServer(app);
@@ -5168,6 +5171,7 @@ async function startServer() {
   const disableHmr = process.env.DISABLE_HMR === 'true';
 
   if (!useProdStatic) {
+    const { createServer: createViteServer } = await import('vite');
     const vite = await createViteServer({
       server: {
         middlewareMode: true,
