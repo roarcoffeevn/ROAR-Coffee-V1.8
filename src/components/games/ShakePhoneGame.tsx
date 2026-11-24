@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Coins, Gift, RefreshCw, Smartphone, Sparkles, Volume2, VolumeX, Zap } from 'lucide-react';
 import type { GameConfigRecord, GameRewardRecord } from '../../lib/gamesCatalog';
+import { AdaptiveLogo } from '../AdaptiveLogo';
 import { gameSound } from './RoarGamesSound';
 
 interface ShakePhoneGameProps {
@@ -265,6 +266,13 @@ export const ShakePhoneGame: React.FC<ShakePhoneGameProps> = ({
 
       {/* Interactive Shaker Arena */}
       <div className="rounded-2xl bg-[#0B2B1C] text-white border border-[#C6A667]/30 p-4 sm:p-8 flex flex-col items-center text-center space-y-3 sm:space-y-5 relative overflow-hidden">
+        <AdaptiveLogo
+          variant="horizontal"
+          surface="dark"
+          darkTone="gold"
+          size="2xs"
+          className="opacity-85 pointer-events-none"
+        />
         <p className="text-[11px] sm:text-xs text-[#F8F5EF]/80 max-w-md leading-snug">
           {lang === 'en'
             ? 'Shake your phone or tap/hold the ROAR shaker to reach 100% and unlock your prize!'
@@ -303,22 +311,10 @@ export const ShakePhoneGame: React.FC<ShakePhoneGameProps> = ({
             <rect x="56" y="42" width="68" height="96" rx="12" fill="#00552B" stroke="#C6A667" strokeWidth="3" />
             <rect x="52" y="34" width="76" height="16" rx="6" fill="#C6A667" />
             <rect x="74" y="24" width="32" height="10" rx="4" fill="#8C6D32" />
-            <circle cx="90" cy="88" r="21" fill="#111111" stroke="#C6A667" strokeWidth="2" />
+            <circle cx="90" cy="86" r="24" fill="#0E1512" stroke="#C6A667" strokeWidth="2" />
             <text
               x="90"
-              y="92"
-              textAnchor="middle"
-              fill="#C6A667"
-              fontSize="12"
-              fontWeight="800"
-              fontFamily="serif"
-              letterSpacing="1.5"
-            >
-              ROAR
-            </text>
-            <text
-              x="90"
-              y="122"
+              y="126"
               textAnchor="middle"
               fill="#F8F5EF"
               fontSize="9"
@@ -328,6 +324,9 @@ export const ShakePhoneGame: React.FC<ShakePhoneGameProps> = ({
               {energy}%
             </text>
           </svg>
+          <span className="pointer-events-none absolute top-[46%] left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center">
+            <AdaptiveLogo variant="vertical" surface="dark" darkTone="gold" size="2xs" className="scale-[0.78] sm:scale-[0.95]" />
+          </span>
         </button>
 
         {/* Energy Progress Bar */}

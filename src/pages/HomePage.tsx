@@ -307,6 +307,7 @@ export const HomePage: React.FC = () => {
                           <MediaImage
                             imageKey={gv.image_key}
                             alt={lang === 'en' ? gv.name_en : gv.name_vi}
+                            brandMark="bottom-right"
                             className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                           />
                           <span className="absolute top-2.5 left-2.5 px-2.5 py-0.5 rounded bg-[#111111]/85 text-[#C6A667] font-mono text-[11px] font-bold shadow-sm">
@@ -499,6 +500,7 @@ export const HomePage: React.FC = () => {
                 <MediaImage
                   imageKey={cat.img}
                   alt={t(cat.titleVi, cat.titleEn)}
+                  brandMark="top-left"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                 />
                 <span className="absolute bottom-2.5 right-2.5 px-2 py-1 rounded bg-[#111111]/85 text-[#C6A667] text-[11px] font-semibold inline-flex items-center gap-1">
@@ -546,6 +548,7 @@ export const HomePage: React.FC = () => {
                   <MediaImage
                     imageKey={p.image_key}
                     alt={lang === 'vi' ? p.name_vi : p.name_en}
+                    brandMark="bottom-left"
                     className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-300"
                   />
                 </Link>

@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Coins, Gift, RefreshCw, ShoppingBag, Smartphone, Sparkles, Volume2, VolumeX } from 'lucide-react';
 import type { Product } from '../../context/StoreContext';
 import { FORTUNE_SLIPS, type FortuneSlipItem, type GameConfigRecord, type GameRewardRecord } from '../../lib/gamesCatalog';
+import { AdaptiveLogo } from '../AdaptiveLogo';
 import { gameSound } from './RoarGamesSound';
 
 interface FortuneStickGameProps {
@@ -202,12 +203,12 @@ export const FortuneStickGame: React.FC<FortuneStickGameProps> = ({
               </p>
             </div>
 
-            {/* Bamboo Cylinder SVG */}
+            {/* Bamboo Cylinder SVG with Official ROAR COFFEE Crest */}
             <button
               type="button"
               disabled={shaking || blockedNoPoints}
               onClick={() => drawFortuneStick(isSignedIn && !canFree)}
-              className="w-32 h-36 sm:w-44 sm:h-52 flex items-center justify-center cursor-pointer disabled:cursor-not-allowed focus:outline-none touch-manipulation"
+              className="relative w-32 h-36 sm:w-44 sm:h-52 flex items-center justify-center cursor-pointer disabled:cursor-not-allowed focus:outline-none touch-manipulation"
               style={{
                 transform: shaking ? 'rotate(-14deg) translateY(-6px)' : 'rotate(0deg)',
                 transition: 'transform 160ms cubic-bezier(0.16, 1, 0.3, 1)',
@@ -234,31 +235,11 @@ export const FortuneStickGame: React.FC<FortuneStickGameProps> = ({
                 <rect x="46" y="72" width="88" height="114" rx="14" fill="#18472F" stroke="#C6A667" strokeWidth="3" />
                 <ellipse cx="90" cy="72" rx="44" ry="10" fill="#0B2417" stroke="#C6A667" strokeWidth="2.5" />
                 <line x1="46" y1="126" x2="134" y2="126" stroke="#C6A667" strokeWidth="2" opacity="0.65" />
-                <circle cx="90" cy="126" r="22" fill="#0E1512" stroke="#C6A667" strokeWidth="2" />
-                <text
-                  x="90"
-                  y="130"
-                  textAnchor="middle"
-                  fill="#C6A667"
-                  fontSize="12"
-                  fontWeight="800"
-                  fontFamily="serif"
-                >
-                  XĂM
-                </text>
-                <text
-                  x="90"
-                  y="168"
-                  textAnchor="middle"
-                  fill="#F8F5EF"
-                  fontSize="9"
-                  fontWeight="700"
-                  letterSpacing="1.6"
-                  opacity="0.9"
-                >
-                  ROAR COFFEE
-                </text>
+                <circle cx="90" cy="128" r="27" fill="#0E1512" stroke="#C6A667" strokeWidth="2.2" />
               </svg>
+              <span className="pointer-events-none absolute top-[61%] left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center">
+                <AdaptiveLogo variant="vertical" surface="dark" darkTone="gold" size="2xs" className="scale-[0.82] sm:scale-100" />
+              </span>
             </button>
 
             {blockedNoPoints ? (
@@ -309,6 +290,7 @@ export const FortuneStickGame: React.FC<FortuneStickGameProps> = ({
           <div className="w-full max-w-lg rounded-2xl bg-[#F8F5EF] dark:bg-[#14201A] text-[#202020] dark:text-[#F1EFEA] border-2 border-[#C6A667] p-4 sm:p-6 space-y-3 sm:space-y-4 text-left">
             <div className="flex items-start justify-between gap-3 pb-3 border-b border-[#C6A667]/30">
               <div>
+                <AdaptiveLogo variant="horizontal" surface="auto" darkTone="gold" size="2xs" className="mb-1.5" />
                 <div className="text-[11px] font-extrabold uppercase tracking-[0.18em] text-[#8C6D32] dark:text-[#C6A667]">
                   {lang === 'en'
                     ? `FORTUNE STICK #${drawnSlip.number} · ${drawnSlip.tierEn}`

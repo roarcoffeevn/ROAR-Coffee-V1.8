@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Coins, Gift, RotateCcw, Sparkles, Timer } from 'lucide-react';
 import type { GameConfigRecord, GameRewardRecord } from '../../lib/gamesCatalog';
+import { AdaptiveLogo } from '../AdaptiveLogo';
 import { gameSound } from './RoarGamesSound';
 
 interface MemoryCard {
@@ -214,9 +215,14 @@ export const MemoryMatchGame: React.FC<MemoryMatchGameProps> = ({
                   </span>
                 </>
               ) : (
-                <div className="flex flex-col items-center justify-center text-[#C6A667]">
-                  <span className="font-serif text-[11px] sm:text-xs font-extrabold tracking-widest">ROAR</span>
-                  <span className="w-4 sm:w-5 h-0.5 bg-[#C6A667]/50 mt-1 rounded-full" />
+                <div className="flex flex-col items-center justify-center">
+                  <AdaptiveLogo
+                    variant="vertical"
+                    surface="dark"
+                    darkTone="gold"
+                    size="2xs"
+                    className="scale-[0.82] sm:scale-100 pointer-events-none"
+                  />
                 </div>
               )}
             </button>

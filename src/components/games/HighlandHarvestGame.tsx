@@ -1,6 +1,8 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { ChevronLeft, ChevronRight, Coins, Gift, Play, RotateCcw, Sparkles, Trophy } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Coins, Gift, Play, RotateCcw, Sparkles } from 'lucide-react';
 import type { GameConfigRecord, GameRewardRecord } from '../../lib/gamesCatalog';
+import { OFFICIAL_LOGOS } from '../../lib/media';
+import { AdaptiveLogo } from '../AdaptiveLogo';
 import { gameSound } from './RoarGamesSound';
 
 interface FallingItem {
@@ -59,6 +61,25 @@ export const HighlandHarvestGame: React.FC<HighlandHarvestGameProps> = ({
   const nextSpawnRef = useRef(0);
   const itemSeqRef = useRef(1);
   const phaseRef = useRef<'ready' | 'playing' | 'ended'>('ready');
+  const logoCanvasRef = useRef<HTMLCanvasElement | null>(null);
+
+  useEffect(() => {
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
+    img.src = OFFICIAL_LOGOS.vertical;
+    img.onload = () => {
+      const off = document.createElement('canvas');
+      off.width = 140;
+      off.height = 140;
+      const octx = off.getContext('2d');
+      if (!octx) return;
+      octx.drawImage(img, 0, 0, 140, 140);
+      octx.globalCompositeOperation = 'source-in';
+      octx.fillStyle = '#C6A667';
+      octx.fillRect(0, 0, 140, 140);
+      logoCanvasRef.current = off;
+    };
+  }, []);
 
   const drawScene = useCallback((ctx: CanvasRenderingContext2D) => {
     // Highland sky & warm coffee ground gradient
@@ -81,6 +102,14 @@ export const HighlandHarvestGame: React.FC<HighlandHarvestGameProps> = ({
     ctx.lineTo(0, 360);
     ctx.closePath();
     ctx.fill();
+
+    // Subtle ROAR COFFEE official logo watermark in sky
+    if (logoCanvasRef.current) {
+      ctx.save();
+      ctx.globalAlpha = 0.22;
+      ctx.drawImage(logoCanvasRef.current, CANVAS_W / 2 - 42, 42, 84, 84);
+      ctx.restore();
+    }
 
     // Draw falling cherries & beans
     for (const item of itemsRef.current) {
@@ -126,7 +155,7 @@ export const HighlandHarvestGame: React.FC<HighlandHarvestGameProps> = ({
       ctx.restore();
     }
 
-    // Draw rattan harvest basket
+    // Draw rattan harvest basket with ROAR COFFEE crest
     const bx = basketXRef.current;
     const by = CANVAS_H - 42;
     ctx.fillStyle = '#C6A667';
@@ -139,7 +168,7 @@ export const HighlandHarvestGame: React.FC<HighlandHarvestGameProps> = ({
     ctx.fillStyle = '#111111';
     ctx.font = 'bold 10px sans-serif';
     ctx.textAlign = 'center';
-    ctx.fillText('ROAR', bx + BASKET_W / 2, by + 18);
+    ctx.fillText('ROAR COFFEE', bx + BASKET_W / 2, by + 18);
   }, []);
 
   const startRound = () => {
@@ -333,7 +362,7 @@ export const HighlandHarvestGame: React.FC<HighlandHarvestGameProps> = ({
 
         {phase === 'ready' && (
           <div className="absolute inset-0 bg-black/55 backdrop-blur-[2px] flex flex-col items-center justify-center p-3 sm:p-6 text-center text-white">
-            <Trophy className="w-7 h-7 sm:w-10 sm:h-10 text-[#C6A667] mb-1 sm:mb-2 shrink-0" />
+            <AdaptiveLogo variant="horizontal" surface="dark" darkTone="gold" size="2xs" className="mb-1.5 sm:mb-2" />
             <h4 className="font-serif text-base sm:text-xl font-bold mb-1">
               {lang === 'en' ? 'Highland Cherry Harvest' : 'Thu Hoạch Quả Chín Tây Nguyên'}
             </h4>

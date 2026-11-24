@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Coins, Gift, PackageOpen, RotateCcw, Sparkles } from 'lucide-react';
 import type { GameConfigRecord, GameRewardRecord } from '../../lib/gamesCatalog';
+import { AdaptiveLogo } from '../AdaptiveLogo';
 import { gameSound } from './RoarGamesSound';
 
 interface MysteryBoxGameProps {
@@ -148,7 +149,8 @@ export const MysteryBoxGame: React.FC<MysteryBoxGameProps> = ({
             >
               {isChosen && revealedReward ? (
                 <>
-                  <PackageOpen className="w-7 h-7 sm:w-10 sm:h-10 text-[#C6A667] mb-1.5 sm:mb-3" />
+                  <AdaptiveLogo variant="horizontal" surface="dark" darkTone="gold" size="2xs" className="mb-1.5 opacity-90" />
+                  <PackageOpen className="w-7 h-7 sm:w-9 sm:h-9 text-[#C6A667] mb-1 sm:mb-2" />
                   <span className="text-[9px] sm:text-[10px] font-extrabold uppercase tracking-widest text-[#C6A667] line-clamp-1">
                     {lang === 'en' ? revealedReward.badge_en : revealedReward.badge_vi}
                   </span>
@@ -158,11 +160,11 @@ export const MysteryBoxGame: React.FC<MysteryBoxGameProps> = ({
                 </>
               ) : (
                 <>
-                  <div className="w-11 h-11 sm:w-16 sm:h-16 rounded-xl sm:rounded-2xl bg-[#00552B] text-[#C6A667] flex items-center justify-center shadow-md mb-2 sm:mb-3 group-hover:scale-105 transition-transform">
+                  <div className="w-11 h-11 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl bg-[#00552B] border border-[#C6A667]/50 text-[#C6A667] flex items-center justify-center shadow-md mb-1.5 sm:mb-2.5 group-hover:scale-105 transition-transform">
                     {opening && isChosen ? (
-                      <Sparkles className="w-6 h-6 sm:w-8 sm:h-8 animate-spin" />
+                      <Sparkles className="w-5 h-5 sm:w-7 sm:h-7 animate-spin" />
                     ) : (
-                      <Gift className="w-6 h-6 sm:w-8 sm:h-8" />
+                      <AdaptiveLogo variant="vertical" surface="dark" darkTone="gold" size="2xs" className="scale-[0.75] sm:scale-[0.9]" />
                     )}
                   </div>
                   <span className="font-serif text-xs sm:text-base font-bold text-[#111111] dark:text-[#F8F5EF] leading-tight">

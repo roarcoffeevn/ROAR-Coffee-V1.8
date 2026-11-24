@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom';
 import { Clock, ShoppingBag, Trash2 } from 'lucide-react';
 import { useI18n } from '../i18n/I18nContext';
 import { type Product, useStore } from '../context/StoreContext';
-import { resolveMediaUrl } from '../lib/media';
 import { getTierPriceRange, type VolumePriceTier } from '../lib/pricing';
+import { MediaImage } from './MediaImage';
 
 const STORAGE_KEY = 'roar_recently_viewed_v1';
 
@@ -102,10 +102,11 @@ export const RecentlyViewedStrip: React.FC<{ excludeSlug?: string }> = ({ exclud
             >
               <div>
                 <Link to={localePath(`/product/${p.slug}`)} className="block aspect-[4/3] bg-[#F8F5EF] dark:bg-[#0E1512] overflow-hidden">
-                  <img
-                    src={resolveMediaUrl(p.image_key)}
+                  <MediaImage
+                    imageKey={p.image_key}
                     alt={lang === 'en' ? p.name_en : p.name_vi}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    brandMark="bottom-left"
                   />
                 </Link>
                 <div className="p-3 space-y-1">

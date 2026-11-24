@@ -351,6 +351,7 @@ export const ProductDetailPage: React.FC = () => {
                 <MediaImage
                   imageKey={currentSlide.imageKey}
                   alt={lang === 'vi' ? `${product.name_vi} — ${currentSlide.captionVi}` : `${product.name_en} — ${currentSlide.captionEn}`}
+                  brandMark="top-left"
                   className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
                 />
                 <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/75 via-black/30 to-transparent px-4 py-3 flex items-end justify-between gap-3">
@@ -439,6 +440,7 @@ export const ProductDetailPage: React.FC = () => {
                       <MediaImage
                         imageKey={currentSlide.imageKey}
                         alt={lang === 'vi' ? currentSlide.captionVi : currentSlide.captionEn}
+                        brandMark="top-left"
                         className="w-full h-full object-contain"
                       />
                     </div>
@@ -1160,7 +1162,7 @@ export const ProductDetailPage: React.FC = () => {
                 className="bg-white dark:bg-[#16221C] rounded-xl border border-[#202020]/10 dark:border-white/10 overflow-hidden hover:-translate-y-0.5 transition-transform"
               >
                 <div className="aspect-[4/5] bg-[#F8F5EF] dark:bg-[#0E1512]">
-                  <MediaImage imageKey={r.image_key} alt={lang === 'vi' ? r.name_vi : r.name_en} className="w-full h-full object-cover" />
+                  <MediaImage imageKey={r.image_key} alt={lang === 'vi' ? r.name_vi : r.name_en} brandMark="bottom-left" className="w-full h-full object-cover" />
                 </div>
                 <div className="p-4 space-y-1">
                   <span className="text-[11px] font-mono text-[#00552B] dark:text-[#C6A667]">{r.sku}</span>

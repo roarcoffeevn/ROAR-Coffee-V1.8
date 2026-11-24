@@ -468,6 +468,7 @@ export const ShopPage: React.FC<ShopPageProps> = ({ defaultCategory = 'all' }) =
                         <MediaImage
                           imageKey={p.image_key}
                           alt={lang === 'vi' ? p.name_vi : p.name_en}
+                          brandMark="bottom-left"
                           className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-300"
                         />
                       </Link>

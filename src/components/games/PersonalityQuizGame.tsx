@@ -163,6 +163,7 @@ export const PersonalityQuizGame: React.FC<PersonalityQuizGameProps> = ({
             <MediaImage
               imageKey={persona?.custom_image_url || persona?.image_key || matchedProduct?.image_key}
               alt={persona ? (lang === 'en' ? persona.animal_en : persona.animal_vi) : 'ROAR'}
+              brandMark="bottom-left"
               className="w-full h-full object-cover"
             />
           </div>

@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Coins, Gift, RotateCw, Sparkles, Volume2, VolumeX } from 'lucide-react';
 import type { GameConfigRecord, GameRewardRecord } from '../../lib/gamesCatalog';
+import { AdaptiveLogo } from '../AdaptiveLogo';
 import { gameSound } from './RoarGamesSound';
 
 interface LuckyWheelGameProps {
@@ -211,17 +212,23 @@ export const LuckyWheelGame: React.FC<LuckyWheelGameProps> = ({
               })}
             </svg>
 
-            {/* Center Spin Hub */}
+            {/* Center Spin Hub with Official ROAR COFFEE Logo */}
             <button
               type="button"
               disabled={spinning || slices.length === 0}
               onClick={() => handleSpin(isSignedIn && !canFree)}
-              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-[#111111] border-[3px] sm:border-4 border-[#C6A667] text-[#F8F5EF] flex flex-col items-center justify-center shadow-xl hover:scale-105 active:scale-95 transition-transform cursor-pointer disabled:opacity-60"
+              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-[#111111] border-[3px] sm:border-4 border-[#C6A667] text-[#F8F5EF] flex flex-col items-center justify-center shadow-xl hover:scale-105 active:scale-95 transition-transform cursor-pointer disabled:opacity-60 overflow-hidden"
             >
-              <RotateCw className={`w-4 h-4 sm:w-5 sm:h-5 text-[#C6A667] ${spinning ? 'animate-spin' : ''}`} />
-              <span className="text-[9px] sm:text-[10px] font-extrabold uppercase tracking-wider mt-0.5">
-                {spinning ? '...' : 'ROAR'}
-              </span>
+              <AdaptiveLogo
+                variant="vertical"
+                surface="dark"
+                darkTone="gold"
+                size="2xs"
+                className={`pointer-events-none transition-transform duration-300 ${spinning ? 'scale-90 animate-pulse' : ''}`}
+              />
+              {spinning && (
+                <RotateCw className="w-3.5 h-3.5 text-[#C6A667] animate-spin absolute bottom-1" />
+              )}
             </button>
           </div>
         </div>

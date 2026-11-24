@@ -21,18 +21,20 @@ interface AdaptiveLogoProps {
    * - 'white': Pure white inverted finish across all viewports on dark surfaces
    */
   darkTone?: 'gold' | 'white' | 'mobile-gold';
-  size?: 'xs' | 'sm' | 'md' | 'lg';
+  size?: '2xs' | 'xs' | 'sm' | 'md' | 'lg';
   className?: string;
 }
 
-const SIZE_CLASSES: Record<'horizontal' | 'vertical', Record<'xs' | 'sm' | 'md' | 'lg', string>> = {
+const SIZE_CLASSES: Record<'horizontal' | 'vertical', Record<'2xs' | 'xs' | 'sm' | 'md' | 'lg', string>> = {
   horizontal: {
+    '2xs': 'h-4 sm:h-[18px] w-auto max-w-[92px]',
     xs: 'h-9 w-auto max-w-[175px]',
     sm: 'h-11 sm:h-12 w-auto max-w-[225px]',
     md: 'h-12 sm:h-14 w-auto max-w-[270px]',
     lg: 'h-16 sm:h-20 w-auto max-w-[340px]',
   },
   vertical: {
+    '2xs': 'h-8 sm:h-10 w-auto max-w-[64px]',
     xs: 'h-[54px] sm:h-[60px] w-auto max-w-[136px]',
     sm: 'h-24 w-auto max-w-[190px]',
     md: 'h-32 w-auto max-w-[240px]',
@@ -87,7 +89,7 @@ const LogoAsset: React.FC<LogoAssetProps> = ({
         : 'hidden';
 
   return (
-    <span className={`relative inline-flex items-center justify-center shrink-0 ${visibilityClass}`}>
+    <span className={`relative ${visibilityClass || 'inline-flex'} items-center justify-center shrink-0`}>
       <img
         src={src}
         alt="ROAR COFFEE® — Igniting Courage. Defining Character."
@@ -128,7 +130,7 @@ export const AdaptiveLogo: React.FC<AdaptiveLogoProps> = ({
         <LogoAsset
           src={OFFICIAL_LOGOS.horizontal}
           sizeClass={SIZE_CLASSES.horizontal[size]}
-          visibilityClass="md:hidden"
+          visibilityClass="inline-flex md:hidden"
           surface={surface}
           darkTone={darkTone}
         />
