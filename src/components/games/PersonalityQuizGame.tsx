@@ -157,20 +157,20 @@ export const PersonalityQuizGame: React.FC<PersonalityQuizGameProps> = ({
     const canFree = remainingFreeToday > 0;
 
     return (
-      <div className="space-y-5">
-        <div className="p-5 rounded-2xl bg-[#F8F5EF] dark:bg-[#0E1512] border border-[#C6A667]/35 grid md:grid-cols-[200px_1fr] gap-5 items-center">
-          <div className="aspect-square rounded-xl overflow-hidden bg-white dark:bg-[#16221C] border border-[#202020]/10 dark:border-white/10">
+      <div className="space-y-3.5 sm:space-y-5">
+        <div className="p-3.5 sm:p-5 rounded-2xl bg-[#F8F5EF] dark:bg-[#0E1512] border border-[#C6A667]/35 grid md:grid-cols-[200px_1fr] gap-3.5 sm:gap-5 items-center">
+          <div className="aspect-square max-w-[140px] sm:max-w-[200px] mx-auto md:mx-0 w-full rounded-xl overflow-hidden bg-white dark:bg-[#16221C] border border-[#202020]/10 dark:border-white/10">
             <MediaImage
               imageKey={persona?.custom_image_url || persona?.image_key || matchedProduct?.image_key}
               alt={persona ? (lang === 'en' ? persona.animal_en : persona.animal_vi) : 'ROAR'}
               className="w-full h-full object-cover"
             />
           </div>
-          <div className="space-y-3">
+          <div className="space-y-2 sm:space-y-3">
             <div className="text-[11px] font-bold uppercase tracking-[0.14em] text-[#00552B] dark:text-[#C6A667]">
               {lang === 'en' ? 'YOUR ROAR COFFEE PERSONALITY' : 'CÁ TÍNH CÀ PHÊ ROAR CỦA BẠN'}
             </div>
-            <h3 className="font-serif text-2xl font-bold text-[#111111] dark:text-[#F8F5EF]">
+            <h3 className="font-serif text-xl sm:text-2xl font-bold text-[#111111] dark:text-[#F8F5EF]">
               {persona ? (lang === 'en' ? `${persona.animal_en} Spirit` : `Linh Vật ${persona.animal_vi} (${persona.animal_en})`) : matchedSlug}
             </h3>
             <p className="text-xs font-semibold text-[#8C6D32] dark:text-[#C6A667]">
@@ -282,9 +282,9 @@ export const PersonalityQuizGame: React.FC<PersonalityQuizGameProps> = ({
   const progressPct = Math.round(((step + 1) / QUIZ_QUESTIONS.length) * 100);
 
   return (
-    <div className="space-y-5">
-      <div className="space-y-2">
-        <div className="flex items-center justify-between text-xs font-bold text-[#202020]/70 dark:text-[#F1EFEA]/70">
+    <div className="space-y-3.5 sm:space-y-5">
+      <div className="space-y-1.5 sm:space-y-2">
+        <div className="flex items-center justify-between text-[11px] sm:text-xs font-bold text-[#202020]/70 dark:text-[#F1EFEA]/70">
           <span>
             {lang === 'en' ? `Question ${step + 1} of ${QUIZ_QUESTIONS.length}` : `Câu hỏi ${step + 1} / ${QUIZ_QUESTIONS.length}`}
           </span>
@@ -295,22 +295,22 @@ export const PersonalityQuizGame: React.FC<PersonalityQuizGameProps> = ({
         </div>
       </div>
 
-      <h3 className="font-serif text-xl sm:text-2xl font-bold text-[#111111] dark:text-[#F8F5EF]">
+      <h3 className="font-serif text-base sm:text-2xl font-bold text-[#111111] dark:text-[#F8F5EF] leading-snug">
         {lang === 'en' ? currentQ.qEn : currentQ.qVi}
       </h3>
 
-      <div className="grid sm:grid-cols-2 gap-3">
+      <div className="grid sm:grid-cols-2 gap-2 sm:gap-3">
         {currentQ.options.map((opt, idx) => (
           <button
             key={idx}
             type="button"
             onClick={() => handleSelectOption(opt.traits)}
-            className="p-4 rounded-xl border border-[#202020]/12 dark:border-white/15 bg-[#F8F5EF]/60 dark:bg-[#0E1512] hover:border-[#00552B] dark:hover:border-[#C6A667] hover:bg-[#00552B]/5 text-left transition-all cursor-pointer flex items-start gap-3 group"
+            className="p-3 sm:p-4 rounded-xl border border-[#202020]/12 dark:border-white/15 bg-[#F8F5EF]/60 dark:bg-[#0E1512] hover:border-[#00552B] dark:hover:border-[#C6A667] hover:bg-[#00552B]/5 text-left transition-all cursor-pointer flex items-center sm:items-start gap-2.5 sm:gap-3 group min-h-[48px]"
           >
-            <span className="w-7 h-7 rounded-lg bg-[#00552B]/10 dark:bg-[#C6A667]/20 text-[#00552B] dark:text-[#C6A667] text-xs font-extrabold flex items-center justify-center shrink-0 group-hover:bg-[#00552B] group-hover:text-white transition-colors">
+            <span className="w-6 h-6 sm:w-7 sm:h-7 rounded-lg bg-[#00552B]/10 dark:bg-[#C6A667]/20 text-[#00552B] dark:text-[#C6A667] text-xs font-extrabold flex items-center justify-center shrink-0 group-hover:bg-[#00552B] group-hover:text-white transition-colors">
               {String.fromCharCode(65 + idx)}
             </span>
-            <span className="text-sm font-medium text-[#202020] dark:text-[#F1EFEA] leading-snug">
+            <span className="text-xs sm:text-sm font-medium text-[#202020] dark:text-[#F1EFEA] leading-snug">
               {lang === 'en' ? opt.labelEn : opt.labelVi}
             </span>
           </button>

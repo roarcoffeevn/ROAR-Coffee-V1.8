@@ -72,6 +72,23 @@ class RoarGameSoundEngine {
     this.playTone(1174.66, 0.28, 'triangle', 0.08, 0.2);
   }
 
+  placeBlock() {
+    this.playTone(440, 0.055, 'triangle', 0.05, 0);
+    this.playTone(620, 0.045, 'sine', 0.04, 0.025);
+  }
+
+  clearLine(combo = 1) {
+    const base = 523.25 + Math.min(combo - 1, 6) * 55;
+    this.playTone(base, 0.09, 'triangle', 0.075, 0);
+    this.playTone(base * 1.25, 0.11, 'sine', 0.075, 0.05);
+    this.playTone(base * 1.5, 0.18, 'triangle', 0.08, 0.1);
+  }
+
+  gameOver() {
+    this.playTone(330, 0.16, 'triangle', 0.06, 0);
+    this.playTone(261.63, 0.22, 'triangle', 0.06, 0.12);
+  }
+
   win() {
     const notes = [523.25, 659.25, 783.99, 1046.5];
     notes.forEach((n, idx) => {

@@ -159,17 +159,17 @@ export const MemoryMatchGame: React.FC<MemoryMatchGameProps> = ({
   const canFree = remainingFreeToday > 0;
 
   return (
-    <div className="space-y-4">
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <div className="flex items-center gap-4 text-xs font-bold text-[#202020]/80 dark:text-[#F1EFEA]/80 tabular-nums">
+    <div className="space-y-3 sm:space-y-4">
+      <div className="flex flex-wrap items-center justify-between gap-2 sm:gap-3">
+        <div className="flex items-center gap-3 sm:gap-4 text-[11px] sm:text-xs font-bold text-[#202020]/80 dark:text-[#F1EFEA]/80 tabular-nums">
           <span>
-            {lang === 'en' ? 'Pairs:' : 'Cặp thẻ:'}{' '}
+            {lang === 'en' ? 'Pairs:' : 'Cặp:'}{' '}
             <strong className="text-[#00552B] dark:text-[#C6A667]">
               {matchedCount}/{PAIRS_CATALOG.length}
             </strong>
           </span>
           <span>
-            {lang === 'en' ? 'Moves:' : 'Số lượt lật:'} <strong>{moves}</strong>
+            {lang === 'en' ? 'Moves:' : 'Lượt:'} <strong>{moves}</strong>
           </span>
           <span className="inline-flex items-center gap-1">
             <Timer className="w-3.5 h-3.5 text-[#C6A667]" />
@@ -180,15 +180,15 @@ export const MemoryMatchGame: React.FC<MemoryMatchGameProps> = ({
         <button
           type="button"
           onClick={resetDeck}
-          className="px-3.5 py-1.5 rounded-lg border border-[#202020]/15 dark:border-white/15 text-xs font-semibold inline-flex items-center gap-1.5 hover:bg-black/5 dark:hover:bg-white/5 cursor-pointer"
+          className="px-3 py-1.5 rounded-lg border border-[#202020]/15 dark:border-white/15 text-[11px] sm:text-xs font-semibold inline-flex items-center gap-1.5 hover:bg-black/5 dark:hover:bg-white/5 cursor-pointer whitespace-nowrap"
         >
           <RotateCcw className="w-3.5 h-3.5" />
-          <span>{lang === 'en' ? 'Shuffle New Board' : 'Xáo Bài Mới'}</span>
+          <span>{lang === 'en' ? 'Shuffle' : 'Xáo Bài'}</span>
         </button>
       </div>
 
       {/* 4x4 Grid */}
-      <div className="grid grid-cols-4 gap-2.5 sm:gap-3 max-w-lg mx-auto">
+      <div className="grid grid-cols-4 gap-2 sm:gap-3 max-w-[330px] sm:max-w-lg mx-auto">
         {cards.map((card) => {
           const revealed = card.flipped || card.matched;
           return (
@@ -198,7 +198,7 @@ export const MemoryMatchGame: React.FC<MemoryMatchGameProps> = ({
               onClick={() => handleCardClick(card)}
               disabled={revealed || locked}
               aria-label={revealed ? (lang === 'en' ? card.titleEn : card.titleVi) : 'ROAR card'}
-              className={`aspect-square rounded-xl border transition-all duration-200 flex flex-col items-center justify-center p-1.5 select-none ${
+              className={`aspect-square rounded-xl border transition-all duration-200 flex flex-col items-center justify-center p-1 sm:p-1.5 select-none touch-manipulation ${
                 card.matched
                   ? 'bg-[#00552B]/15 dark:bg-[#00552B]/35 border-[#00552B] dark:border-[#C6A667] scale-[0.97]'
                   : revealed
@@ -208,15 +208,15 @@ export const MemoryMatchGame: React.FC<MemoryMatchGameProps> = ({
             >
               {revealed ? (
                 <>
-                  <span className="text-2xl sm:text-3xl leading-none">{card.symbol}</span>
-                  <span className="mt-1.5 text-[10px] font-bold text-[#111111] dark:text-[#F8F5EF] leading-tight text-center line-clamp-1">
+                  <span className="text-xl sm:text-3xl leading-none">{card.symbol}</span>
+                  <span className="mt-1 sm:mt-1.5 text-[9px] sm:text-[10px] font-bold text-[#111111] dark:text-[#F8F5EF] leading-tight text-center line-clamp-1">
                     {lang === 'en' ? card.titleEn : card.titleVi}
                   </span>
                 </>
               ) : (
                 <div className="flex flex-col items-center justify-center text-[#C6A667]">
-                  <span className="font-serif text-xs font-extrabold tracking-widest">ROAR</span>
-                  <span className="w-5 h-0.5 bg-[#C6A667]/50 mt-1 rounded-full" />
+                  <span className="font-serif text-[11px] sm:text-xs font-extrabold tracking-widest">ROAR</span>
+                  <span className="w-4 sm:w-5 h-0.5 bg-[#C6A667]/50 mt-1 rounded-full" />
                 </div>
               )}
             </button>

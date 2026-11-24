@@ -3691,13 +3691,14 @@ app.get('/api/games', (req: AuthedRequest, res) => {
       `SELECT * FROM game_configs
        ORDER BY CASE game_key
          WHEN 'wheel' THEN 1
-         WHEN 'shake' THEN 2
-         WHEN 'fortune' THEN 3
-         WHEN 'quiz' THEN 4
-         WHEN 'memory' THEN 5
-         WHEN 'harvest' THEN 6
-         WHEN 'mystery' THEN 7
-         ELSE 8
+         WHEN 'blockblast' THEN 2
+         WHEN 'shake' THEN 3
+         WHEN 'fortune' THEN 4
+         WHEN 'quiz' THEN 5
+         WHEN 'memory' THEN 6
+         WHEN 'harvest' THEN 7
+         WHEN 'mystery' THEN 8
+         ELSE 9
        END`
     )
     .all() as any[];
@@ -3768,7 +3769,7 @@ app.post('/api/games/play', requireAuth, (req: AuthedRequest, res) => {
   const gameKey = String(req.body?.gameKey || '').trim() as GameKey;
   const useExtraPoints = Boolean(req.body?.useExtraPoints);
   const score = Math.max(0, Math.floor(Number(req.body?.score || 0)));
-  const validKeys: GameKey[] = ['wheel', 'quiz', 'memory', 'harvest', 'mystery', 'shake', 'fortune'];
+  const validKeys: GameKey[] = ['wheel', 'blockblast', 'quiz', 'memory', 'harvest', 'mystery', 'shake', 'fortune'];
   if (!validKeys.includes(gameKey)) {
     res.status(400).json({ error: 'Mini-game không hợp lệ.' });
     return;
@@ -3818,7 +3819,7 @@ app.post('/api/games/play', requireAuth, (req: AuthedRequest, res) => {
         );
       }
 
-      if (gameKey === 'harvest' && score < Number(cfg.min_score_to_win || 0)) {
+      if ((gameKey === 'harvest' || gameKey === 'blockblast') && score < Number(cfg.min_score_to_win || 0)) {
         db.prepare(`
           INSERT INTO game_plays (user_id, game_key, play_date, used_points, score, reward_id, claim_id)
           VALUES (?, ?, ?, ?, ?, NULL, NULL)
@@ -4218,13 +4219,14 @@ app.get('/api/admin/games/analytics', requirePermission('promotions'), (req, res
       `SELECT * FROM game_configs
        ORDER BY CASE game_key
          WHEN 'wheel' THEN 1
-         WHEN 'shake' THEN 2
-         WHEN 'fortune' THEN 3
-         WHEN 'quiz' THEN 4
-         WHEN 'memory' THEN 5
-         WHEN 'harvest' THEN 6
-         WHEN 'mystery' THEN 7
-         ELSE 8
+         WHEN 'blockblast' THEN 2
+         WHEN 'shake' THEN 3
+         WHEN 'fortune' THEN 4
+         WHEN 'quiz' THEN 5
+         WHEN 'memory' THEN 6
+         WHEN 'harvest' THEN 7
+         WHEN 'mystery' THEN 8
+         ELSE 9
        END`
     )
     .all() as any[];

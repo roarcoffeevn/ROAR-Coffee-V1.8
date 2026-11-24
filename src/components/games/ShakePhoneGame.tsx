@@ -214,42 +214,42 @@ export const ShakePhoneGame: React.FC<ShakePhoneGameProps> = ({
   const blockedNoPoints = isSignedIn && !canFree && userPoints < costPts;
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-3 sm:space-y-5">
       {/* Top Status & Controls */}
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <div className="flex items-center gap-3 text-xs text-[#202020]/75 dark:text-[#F1EFEA]/75">
+      <div className="flex flex-wrap items-center justify-between gap-2 sm:gap-3">
+        <div className="flex items-center gap-2 sm:gap-3 text-[11px] sm:text-xs text-[#202020]/75 dark:text-[#F1EFEA]/75 min-w-0">
           {isSignedIn ? (
-            <span>
+            <span className="truncate">
               {canFree
                 ? lang === 'en'
-                  ? `Free shakes today: ${remainingFreeToday}`
-                  : `Lượt lắc miễn phí hôm nay: ${remainingFreeToday}`
+                  ? `Free shakes: ${remainingFreeToday}`
+                  : `Lượt lắc miễn phí: ${remainingFreeToday}`
                 : lang === 'en'
-                  ? `Extra shake cost: ${costPts} pts`
-                  : `Đổi ${costPts} điểm ROAR để lắc tiếp`}
+                  ? `Cost: ${costPts} pts`
+                  : `Đổi ${costPts} điểm`}
             </span>
           ) : (
-            <span>
+            <span className="truncate">
               {lang === 'en'
-                ? 'Demo mode · Sign in to save prizes'
-                : 'Chế độ chơi thử · Đăng nhập để nhận quà thật'}
+                ? 'Demo mode'
+                : 'Chơi thử'}
             </span>
           )}
           <span aria-hidden="true">·</span>
-          <span className="font-mono font-bold tabular-nums text-[#00552B] dark:text-[#C6A667]">
-            {energy}% {lang === 'en' ? 'Energy' : 'Năng lượng'}
+          <span className="font-mono font-bold tabular-nums text-[#00552B] dark:text-[#C6A667] whitespace-nowrap">
+            {energy}%
           </span>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
           {motionSupported && !motionEnabled && (
             <button
               type="button"
               onClick={requestIosMotion}
-              className="px-2.5 py-1.5 rounded-lg border border-[#202020]/15 dark:border-white/15 text-[11px] font-semibold inline-flex items-center gap-1.5 hover:bg-black/5 dark:hover:bg-white/5 cursor-pointer whitespace-nowrap"
+              className="px-2.5 py-1.5 rounded-lg border border-[#202020]/15 dark:border-white/15 text-[11px] font-semibold inline-flex items-center gap-1 hover:bg-black/5 dark:hover:bg-white/5 cursor-pointer whitespace-nowrap"
             >
               <Smartphone className="w-3.5 h-3.5 text-[#00552B] dark:text-[#C6A667]" />
-              <span>{lang === 'en' ? 'Enable Shake Sensor' : 'Bật Cảm Biến Lắc'}</span>
+              <span>{lang === 'en' ? 'Sensor' : 'Cảm Biến'}</span>
             </button>
           )}
           <button
@@ -264,11 +264,11 @@ export const ShakePhoneGame: React.FC<ShakePhoneGameProps> = ({
       </div>
 
       {/* Interactive Shaker Arena */}
-      <div className="rounded-2xl bg-[#0B2B1C] text-white border border-[#C6A667]/30 p-6 sm:p-8 flex flex-col items-center text-center space-y-5 relative overflow-hidden">
-        <p className="text-xs text-[#F8F5EF]/80 max-w-md">
+      <div className="rounded-2xl bg-[#0B2B1C] text-white border border-[#C6A667]/30 p-4 sm:p-8 flex flex-col items-center text-center space-y-3 sm:space-y-5 relative overflow-hidden">
+        <p className="text-[11px] sm:text-xs text-[#F8F5EF]/80 max-w-md leading-snug">
           {lang === 'en'
-            ? 'Shake your phone briskly, press Space, or tap/hold the ROAR shaker below to reach 100% and pop open your prize!'
-            : 'Lắc nhẹ điện thoại, nhấn giữ nút bên dưới hoặc chạm liên tục vào bình pha ROAR để nạp đủ 100% năng lượng mở quà!'}
+            ? 'Shake your phone or tap/hold the ROAR shaker to reach 100% and unlock your prize!'
+            : 'Lắc điện thoại, giữ nút hoặc chạm vào bình ROAR để nạp đủ 100% mở quà!'}
         </p>
 
         {/* Interactive Shaker SVG */}
@@ -277,7 +277,7 @@ export const ShakePhoneGame: React.FC<ShakePhoneGameProps> = ({
           onClick={() => addEnergyImpulse(25)}
           disabled={blockedNoPoints || phase === 'COMPLETE'}
           aria-label={lang === 'en' ? 'Tap to shake ROAR canister' : 'Chạm để lắc bình cà phê ROAR'}
-          className="relative w-44 h-44 flex items-center justify-center cursor-pointer disabled:cursor-not-allowed focus:outline-none group"
+          className="relative w-32 h-32 sm:w-44 sm:h-44 flex items-center justify-center cursor-pointer disabled:cursor-not-allowed focus:outline-none group touch-manipulation"
           style={{
             transform: `translateX(${translateX}px) rotate(${tiltAngle}deg) scale(${holding ? 1.04 : 1})`,
             transition: 'transform 110ms cubic-bezier(0.16, 1, 0.3, 1)',
@@ -345,12 +345,12 @@ export const ShakePhoneGame: React.FC<ShakePhoneGameProps> = ({
         </div>
 
         {/* Action Buttons */}
-        <div className="flex flex-wrap items-center justify-center gap-3 pt-1">
+        <div className="w-full flex flex-wrap items-center justify-center gap-2 sm:gap-3 pt-0.5">
           {phase === 'COMPLETE' ? (
             <button
               type="button"
               onClick={resetRound}
-              className="px-6 py-3 rounded-xl bg-[#C6A667] hover:bg-[#b59454] text-[#111111] text-sm font-bold inline-flex items-center gap-2 cursor-pointer whitespace-nowrap"
+              className="px-5 py-2.5 sm:px-6 sm:py-3 rounded-xl bg-[#C6A667] hover:bg-[#b59454] text-[#111111] text-xs sm:text-sm font-bold inline-flex items-center gap-2 cursor-pointer whitespace-nowrap min-h-[44px]"
             >
               <RefreshCw className="w-4 h-4" />
               <span>{lang === 'en' ? 'Shake Again' : 'Lắc Lượt Mới'}</span>
@@ -365,7 +365,7 @@ export const ShakePhoneGame: React.FC<ShakePhoneGameProps> = ({
               <button
                 type="button"
                 onClick={onRequireLogin}
-                className="px-5 py-2.5 rounded-xl bg-white/15 text-white text-xs font-bold cursor-pointer"
+                className="px-5 py-2.5 rounded-xl bg-white/15 text-white text-xs font-bold cursor-pointer min-h-[44px]"
               >
                 {lang === 'en' ? 'Earn Points via Check-in' : 'Kiếm thêm điểm tại Điểm Danh'}
               </button>
@@ -383,31 +383,31 @@ export const ShakePhoneGame: React.FC<ShakePhoneGameProps> = ({
                 }}
                 onTouchEnd={stopHoldCharge}
                 onClick={() => addEnergyImpulse(34)}
-                className="px-6 py-3 rounded-xl bg-[#C6A667] hover:bg-[#b59454] text-[#111111] text-sm font-bold inline-flex items-center gap-2 shadow-lg cursor-pointer whitespace-nowrap select-none"
+                className="px-4 py-2.5 sm:px-6 sm:py-3 rounded-xl bg-[#C6A667] hover:bg-[#b59454] text-[#111111] text-xs sm:text-sm font-bold inline-flex items-center gap-1.5 sm:gap-2 shadow-lg cursor-pointer whitespace-nowrap select-none min-h-[44px] touch-manipulation"
               >
-                {isSignedIn && !canFree ? <Coins className="w-4 h-4" /> : <Zap className="w-4 h-4" />}
+                {isSignedIn && !canFree ? <Coins className="w-4 h-4 shrink-0" /> : <Zap className="w-4 h-4 shrink-0" />}
                 <span>
                   {!isSignedIn
                     ? lang === 'en'
-                      ? 'Tap / Hold to Shake (Demo)'
-                      : 'Chạm / Giữ Để Lắc (Chơi Thử)'
+                      ? 'Tap / Hold to Shake'
+                      : 'Chạm / Giữ Để Lắc'
                     : canFree
                       ? lang === 'en'
                         ? 'Tap or Hold to Shake'
-                        : 'Chạm hoặc Giữ Để Lắc Ngay'
+                        : 'Chạm / Giữ Để Lắc'
                       : lang === 'en'
-                        ? `Shake Now (-${costPts} pts)`
-                        : `Lắc Ngay (-${costPts} điểm)`}
+                        ? `Shake (-${costPts} pts)`
+                        : `Lắc (-${costPts} điểm)`}
                 </span>
               </button>
 
               <button
                 type="button"
                 onClick={() => addEnergyImpulse(100)}
-                className="px-4 py-3 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-bold inline-flex items-center gap-1.5 cursor-pointer whitespace-nowrap"
+                className="px-3.5 py-2.5 sm:px-4 sm:py-3 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-bold inline-flex items-center gap-1.5 cursor-pointer whitespace-nowrap min-h-[44px]"
               >
-                <Sparkles className="w-3.5 h-3.5 text-[#C6A667]" />
-                <span>{lang === 'en' ? 'Instant Shake' : 'Lắc Nhanh 1 Chạm'}</span>
+                <Sparkles className="w-3.5 h-3.5 text-[#C6A667] shrink-0" />
+                <span>{lang === 'en' ? 'Instant Shake' : 'Lắc 1 Chạm'}</span>
               </button>
             </>
           )}

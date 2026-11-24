@@ -386,9 +386,13 @@ export const FloatingAssistDock: React.FC = () => {
         </div>
       )}
 
-      {/* Floating Right Dock: Scroll-to-Top + Zalo + Call + AI Chat */}
+      {/* Floating Right Dock: Scroll-to-Top + Zalo + Call + AI Chat (hidden on mobile game routes so it never covers the game) */}
       <div
-        className={`group/dock fixed bottom-20 lg:bottom-6 right-4 sm:right-5 z-40 flex flex-col items-end gap-2.5 transition-all duration-300 ${
+        className={`group/dock fixed bottom-20 lg:bottom-6 right-4 sm:right-5 z-40 ${
+          pathname.includes('/play') || pathname.includes('/games') || pathname.includes('/roar-play')
+            ? 'hidden lg:flex'
+            : 'flex'
+        } flex-col items-end gap-2.5 transition-all duration-300 ${
           chatOpen
             ? 'opacity-100 grayscale-0'
             : 'opacity-40 grayscale-[40%] hover:opacity-100 hover:grayscale-0 focus-within:opacity-100 focus-within:grayscale-0'

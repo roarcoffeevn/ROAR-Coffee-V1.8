@@ -11,6 +11,7 @@ import {
   Gamepad2,
   Gift,
   HelpCircle,
+  LayoutGrid,
   Lock,
   PackageOpen,
   ScrollText,
@@ -49,6 +50,7 @@ import { PersonalityQuizGame } from '../components/games/PersonalityQuizGame';
 import { MemoryMatchGame } from '../components/games/MemoryMatchGame';
 import { HighlandHarvestGame } from '../components/games/HighlandHarvestGame';
 import { MysteryBoxGame } from '../components/games/MysteryBoxGame';
+import { BlockBlastGame } from '../components/games/BlockBlastGame';
 import { DailyCheckinGame } from '../components/DailyCheckinGame';
 
 interface RecentWinner {
@@ -75,6 +77,7 @@ export const PlayGamesPage: React.FC = () => {
   );
   const [remainingFreeToday, setRemainingFreeToday] = useState<Record<string, number>>({
     wheel: 1,
+    blockblast: 2,
     shake: 2,
     fortune: 1,
     quiz: 1,
@@ -124,6 +127,7 @@ export const PlayGamesPage: React.FC = () => {
 
   const gameMetaList: Array<{ key: GameKey; icon: React.ReactNode; shortVi: string; shortEn: string }> = [
     { key: 'wheel', icon: <Disc3 className="w-4 h-4" />, shortVi: 'Vòng Quay', shortEn: 'Lucky Wheel' },
+    { key: 'blockblast', icon: <LayoutGrid className="w-4 h-4" />, shortVi: 'Block Blast', shortEn: 'Block Blast' },
     { key: 'shake', icon: <Smartphone className="w-4 h-4" />, shortVi: 'Lắc Điện Thoại', shortEn: 'Shake & Win' },
     { key: 'fortune', icon: <ScrollText className="w-4 h-4" />, shortVi: 'Xin Xăm Cà Phê', shortEn: 'Fortune Stick' },
     { key: 'quiz', icon: <HelpCircle className="w-4 h-4" />, shortVi: 'Gu 7 Cá Tính', shortEn: 'Taste Quiz' },
@@ -231,36 +235,40 @@ export const PlayGamesPage: React.FC = () => {
   const userAvailablePts = user?.points?.available ?? 0;
 
   return (
-    <div className="min-h-screen bg-[#F8F5EF] dark:bg-[#0E1512] text-[#202020] dark:text-[#F1EFEA] pb-20">
-      {/* Compact Editorial Hero Header */}
+    <div className="min-h-screen overflow-x-clip bg-[#F8F5EF] dark:bg-[#0E1512] text-[#202020] dark:text-[#F1EFEA] pb-24 lg:pb-20">
+      {/* Compact Editorial Hero Header (tight mobile viewport fit, full editorial on sm+/lg+) */}
       <section className="bg-[#003D25] text-[#F8F5EF] border-b border-[#C6A667]/25">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
-          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
-            <div className="space-y-2.5 max-w-2xl">
-              <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.18em] text-[#C6A667]">
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-3 sm:py-6 lg:py-10">
+          <div className="flex items-center justify-between gap-3 lg:gap-6">
+            <div className="space-y-1 sm:space-y-2 max-w-2xl min-w-0">
+              <div className="hidden sm:inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.18em] text-[#C6A667]">
                 <Gamepad2 className="w-4 h-4" />
                 <span>{t('ROAR PLAY & WIN · SÂN CHƠI THƯỞNG CÀ PHÊ THẬT', 'ROAR PLAY & WIN · COFFEE REWARDS ARENA')}</span>
               </div>
-              <h1 className="font-serif text-3xl sm:text-4xl font-bold tracking-tight text-white">
-                {t('Chơi Vui Trúng Quà Cà Phê Nguyên Chất & Voucher ROAR', 'Play & Win Real ROAR Coffee Gifts & Vouchers')}
+              <div className="sm:hidden inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-[0.16em] text-[#C6A667]">
+                <Gamepad2 className="w-3.5 h-3.5 shrink-0" />
+                <span>ROAR PLAY &amp; WIN</span>
+              </div>
+              <h1 className="font-serif text-lg sm:text-3xl lg:text-4xl font-bold tracking-tight text-white leading-tight truncate sm:whitespace-normal">
+                {t('Chơi Vui Trúng Quà Cà Phê & Voucher', 'Play & Win ROAR Coffee Gifts')}
               </h1>
-              <p className="text-sm text-[#F8F5EF]/80 leading-relaxed">
+              <p className="hidden sm:block text-sm text-[#F8F5EF]/80 leading-relaxed">
                 {t(
-                  'Tham gia 7 mini-game tương tác mỗi ngày (Vòng Quay, Lắc Điện Thoại, Xin Xăm Cà Phê, Đoán Gu, Lật Thẻ, Hứng Hạt, Hộp Bí Ẩn) để tích điểm ROAR CLUB, săn voucher và rinh ngay túi cà phê tặng kèm miễn phí.',
-                  'Play 7 daily interactive coffee games (Lucky Wheel, Shake & Win, Fortune Stick, Taste Quiz, Memory, Harvest & Mystery Box) to earn ROAR CLUB points, vouchers, and complimentary coffee gifts.'
+                  'Tham gia 8 mini-game tương tác mỗi ngày (Vòng Quay, Block Blast, Lắc Điện Thoại, Xin Xăm Cà Phê, Đoán Gu, Lật Thẻ, Hứng Hạt, Hộp Bí Ẩn) để tích điểm ROAR CLUB, săn voucher và rinh ngay túi cà phê tặng kèm miễn phí.',
+                  'Play 8 daily interactive coffee games (Lucky Wheel, Block Blast, Shake & Win, Fortune Stick, Taste Quiz, Memory, Harvest & Mystery Box) to earn ROAR CLUB points, vouchers, and complimentary coffee gifts.'
                 )}
               </p>
             </div>
 
-            <div className="flex flex-wrap items-center gap-3 shrink-0">
+            <div className="flex items-center gap-2 sm:gap-3 shrink-0">
               {user ? (
-                <div className="px-4 py-3 rounded-xl bg-white/10 border border-[#C6A667]/35 flex items-center gap-3">
-                  <Coins className="w-5 h-5 text-[#C6A667]" />
+                <div className="px-2.5 py-1.5 sm:px-4 sm:py-3 rounded-xl bg-white/10 border border-[#C6A667]/35 flex items-center gap-2 sm:gap-3">
+                  <Coins className="w-4 h-4 sm:w-5 sm:h-5 text-[#C6A667] shrink-0" />
                   <div>
-                    <div className="text-[11px] uppercase tracking-wider text-white/70">
+                    <div className="hidden sm:block text-[11px] uppercase tracking-wider text-white/70">
                       {t('Điểm khả dụng', 'Available Points')}
                     </div>
-                    <div className="font-mono text-lg font-extrabold text-[#C6A667] tabular-nums">
+                    <div className="font-mono text-xs sm:text-lg font-extrabold text-[#C6A667] tabular-nums whitespace-nowrap">
                       {userAvailablePts.toLocaleString()} {t('điểm', 'pts')}
                     </div>
                   </div>
@@ -268,17 +276,18 @@ export const PlayGamesPage: React.FC = () => {
               ) : (
                 <Link
                   to={localePath('/account')}
-                  className="px-5 py-3 rounded-xl bg-[#C6A667] hover:bg-[#b59454] text-[#111111] text-sm font-bold inline-flex items-center gap-2 shadow-md whitespace-nowrap"
+                  className="px-3 py-2 sm:px-5 sm:py-3 rounded-xl bg-[#C6A667] hover:bg-[#b59454] text-[#111111] text-xs sm:text-sm font-bold inline-flex items-center gap-1.5 sm:gap-2 shadow-md whitespace-nowrap shrink-0"
                 >
-                  <Gift className="w-4 h-4" />
-                  <span>{t('Đăng nhập để Lưu & Nhận Quà', 'Sign In to Claim Prizes')}</span>
+                  <Gift className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />
+                  <span className="sm:hidden">{t('Đăng nhập', 'Sign In')}</span>
+                  <span className="hidden sm:inline">{t('Đăng nhập để Lưu & Nhận Quà', 'Sign In to Claim Prizes')}</span>
                 </Link>
               )}
             </div>
           </div>
 
           {/* 7-Game Switcher Tabs */}
-          <div className="mt-7 flex items-center gap-2 overflow-x-auto pb-1">
+          <div className="mt-2.5 sm:mt-6 -mx-3 px-3 sm:mx-0 sm:px-0 flex items-center gap-1.5 sm:gap-2 overflow-x-auto pb-1">
             {gameMetaList.map((g) => {
               const cfg = configs.find((c) => c.game_key === g.key);
               const isSelected = activeGame === g.key;
@@ -288,7 +297,7 @@ export const PlayGamesPage: React.FC = () => {
                   key={g.key}
                   type="button"
                   onClick={() => setActiveGame(g.key)}
-                  className={`px-4 py-2.5 rounded-xl text-xs font-bold inline-flex items-center gap-2 transition-all whitespace-nowrap cursor-pointer border ${
+                  className={`px-3 py-2 sm:px-4 sm:py-2.5 rounded-xl text-xs font-bold inline-flex items-center gap-1.5 sm:gap-2 transition-all whitespace-nowrap shrink-0 cursor-pointer border min-h-[38px] sm:min-h-[42px] ${
                     isSelected
                       ? 'bg-[#C6A667] text-[#111111] border-[#C6A667] shadow-md'
                       : 'bg-white/10 text-white/90 border-white/15 hover:bg-white/15'
@@ -313,21 +322,21 @@ export const PlayGamesPage: React.FC = () => {
       </section>
 
       {/* Main Play Arena + Live Prize Pool & Wallet */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8 grid lg:grid-cols-[1.55fr_1fr] gap-7 items-start">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 mt-3 sm:mt-8 grid grid-cols-1 lg:grid-cols-[minmax(0,1.55fr)_minmax(0,1fr)] gap-4 sm:gap-7 items-start">
         {/* Left Column: Active Game Arena + Daily Check-in */}
-        <div className="space-y-6">
-          <div className="rounded-2xl bg-white dark:bg-[#16221C] border border-[#202020]/10 dark:border-white/10 p-5 sm:p-7 shadow-sm">
-            <div className="mb-5 pb-4 border-b border-[#202020]/10 dark:border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-              <div>
-                <h2 className="font-serif text-2xl font-bold text-[#111111] dark:text-[#F8F5EF]">
+        <div className="space-y-4 sm:space-y-6 min-w-0 w-full">
+          <div className="rounded-2xl bg-white dark:bg-[#16221C] border border-[#202020]/10 dark:border-white/10 p-3 sm:p-7 shadow-sm w-full min-w-0 overflow-hidden">
+            <div className="mb-3 pb-2.5 sm:mb-5 sm:pb-4 border-b border-[#202020]/10 dark:border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 sm:gap-2 min-w-0">
+              <div className="min-w-0 w-full">
+                <h2 className="font-serif text-base sm:text-2xl font-bold text-[#111111] dark:text-[#F8F5EF] leading-tight break-words">
                   {lang === 'en' ? currentConfig.title_en : currentConfig.title_vi}
                 </h2>
-                <p className="text-xs text-[#202020]/70 dark:text-[#F1EFEA]/70 mt-1">
+                <p className="text-[11px] sm:text-xs text-[#202020]/70 dark:text-[#F1EFEA]/70 mt-0.5 sm:mt-1 line-clamp-2 sm:line-clamp-none break-words">
                   {lang === 'en' ? currentConfig.subtitle_en : currentConfig.subtitle_vi}
                 </p>
               </div>
               {currentConfig.active === 0 && (
-                <span className="inline-flex items-center gap-1 px-3 py-1 rounded-lg bg-amber-500/15 text-amber-700 dark:text-amber-300 text-xs font-bold whitespace-nowrap">
+                <span className="inline-flex items-center gap-1 px-3 py-1 rounded-lg bg-amber-500/15 text-amber-700 dark:text-amber-300 text-xs font-bold whitespace-nowrap self-start sm:self-auto">
                   <Lock className="w-3.5 h-3.5" />
                   <span>{t('Đang tạm bảo trì', 'Maintenance')}</span>
                 </span>
@@ -418,6 +427,18 @@ export const PlayGamesPage: React.FC = () => {
                 onRequireLogin={() => navigate(localePath('/account'))}
                 onDemoResult={handleDemoResult}
               />
+            ) : activeGame === 'blockblast' ? (
+              <BlockBlastGame
+                lang={lang}
+                config={currentConfig}
+                rewards={currentRewards}
+                remainingFreeToday={remainingFreeToday.blockblast ?? 0}
+                isSignedIn={Boolean(user)}
+                userPoints={userAvailablePts}
+                onPlayReal={(useExtra, score) => handlePlayReal('blockblast', useExtra, score)}
+                onRequireLogin={() => navigate(localePath('/account'))}
+                onDemoResult={handleDemoResult}
+              />
             ) : (
               <MysteryBoxGame
                 lang={lang}
@@ -438,9 +459,9 @@ export const PlayGamesPage: React.FC = () => {
         </div>
 
         {/* Right Column: Live Prize Pool, My Claims Bag & Recent Winners */}
-        <aside className="space-y-6">
+        <aside className="space-y-4 sm:space-y-6 min-w-0 w-full">
           {/* Active Game Prize Pool */}
-          <div className="rounded-2xl bg-white dark:bg-[#16221C] border border-[#202020]/10 dark:border-white/10 p-5 shadow-sm space-y-4">
+          <div className="rounded-2xl bg-white dark:bg-[#16221C] border border-[#202020]/10 dark:border-white/10 p-4 sm:p-5 shadow-sm space-y-4 w-full min-w-0 overflow-hidden">
             <div className="flex items-center justify-between gap-2">
               <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.14em] text-[#00552B] dark:text-[#C6A667]">
                 <Trophy className="w-4 h-4" />
@@ -595,8 +616,8 @@ export const PlayGamesPage: React.FC = () => {
                       </div>
 
                       {cl.reward_type !== 'points' && (
-                        <div className="flex flex-wrap items-center justify-between gap-2 pt-1">
-                          <code className="px-2 py-1 rounded bg-white dark:bg-[#16221C] border border-[#202020]/10 dark:border-white/10 font-mono text-[11px] font-bold text-[#111111] dark:text-[#C6A667]">
+                        <div className="flex flex-wrap items-center justify-between gap-2 pt-1 min-w-0">
+                          <code className="px-2 py-1 rounded bg-white dark:bg-[#16221C] border border-[#202020]/10 dark:border-white/10 font-mono text-[11px] font-bold text-[#111111] dark:text-[#C6A667] break-all">
                             {codeToUse}
                           </code>
                           {isRedeemable && (
@@ -657,31 +678,31 @@ export const PlayGamesPage: React.FC = () => {
 
       {/* Win Result Celebration Modal */}
       {resultModal && (
-        <div className="fixed inset-0 z-50 bg-black/65 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-white dark:bg-[#16221C] border border-[#C6A667]/50 rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-5 relative">
+        <div className="fixed inset-0 z-50 bg-black/65 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4">
+          <div className="bg-white dark:bg-[#16221C] border border-[#C6A667]/50 rounded-2xl max-w-md w-full max-h-[90svh] overflow-y-auto p-4 sm:p-6 shadow-2xl space-y-3.5 sm:space-y-5 relative">
             <button
               type="button"
               onClick={() => setResultModal(null)}
-              className="absolute top-4 right-4 p-1.5 rounded-lg hover:bg-black/5 dark:hover:bg-white/10 cursor-pointer"
+              className="absolute top-3.5 right-3.5 sm:top-4 sm:right-4 p-1.5 rounded-lg hover:bg-black/5 dark:hover:bg-white/10 cursor-pointer"
               aria-label="Close"
             >
               <X className="w-5 h-5" />
             </button>
 
-            <div className="text-center space-y-3">
-              <div className="w-16 h-16 rounded-2xl bg-[#00552B] text-[#C6A667] flex items-center justify-center mx-auto shadow-lg">
+            <div className="text-center space-y-2 sm:space-y-3">
+              <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-2xl bg-[#00552B] text-[#C6A667] flex items-center justify-center mx-auto shadow-lg">
                 {resultModal.reward.reward_type === 'product_gift' ? (
-                  <Gift className="w-8 h-8" />
+                  <Gift className="w-6 h-6 sm:w-8 sm:h-8" />
                 ) : (
-                  <Sparkles className="w-8 h-8" />
+                  <Sparkles className="w-6 h-6 sm:w-8 sm:h-8" />
                 )}
               </div>
-              <div className="text-[11px] font-extrabold uppercase tracking-[0.18em] text-[#8C6D32] dark:text-[#C6A667]">
+              <div className="text-[10px] sm:text-[11px] font-extrabold uppercase tracking-[0.16em] text-[#8C6D32] dark:text-[#C6A667]">
                 {resultModal.isDemo
                   ? t('KẾT QUẢ CHƠI THỬ (DEMO)', 'DEMO RESULT PREVIEW')
                   : t('CHÚC MỪNG BẠN ĐÃ TRÚNG THƯỞNG', 'CONGRATULATIONS! YOU WON')}
               </div>
-              <h3 className="font-serif text-2xl font-bold text-[#111111] dark:text-[#F8F5EF]">
+              <h3 className="font-serif text-xl sm:text-2xl font-bold text-[#111111] dark:text-[#F8F5EF]">
                 {lang === 'en' ? resultModal.reward.label_en : resultModal.reward.label_vi}
               </h3>
               <p className="text-xs text-[#202020]/75 dark:text-[#F1EFEA]/75 leading-relaxed">

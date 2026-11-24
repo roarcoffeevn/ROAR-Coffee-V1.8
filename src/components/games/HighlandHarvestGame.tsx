@@ -297,10 +297,10 @@ export const HighlandHarvestGame: React.FC<HighlandHarvestGameProps> = ({
   const reachedGoal = score >= targetScore;
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-2.5 sm:space-y-4">
       {/* HUD */}
-      <div className="flex flex-wrap items-center justify-between gap-3 px-4 py-2.5 rounded-xl bg-[#F8F5EF] dark:bg-[#0E1512] border border-[#202020]/10 dark:border-white/10 text-xs font-bold tabular-nums">
-        <div className="flex items-center gap-4">
+      <div className="flex flex-wrap items-center justify-between gap-2 px-3 py-2 sm:px-4 sm:py-2.5 rounded-xl bg-[#F8F5EF] dark:bg-[#0E1512] border border-[#202020]/10 dark:border-white/10 text-[11px] sm:text-xs font-bold tabular-nums">
+        <div className="flex items-center gap-3 sm:gap-4">
           <span>
             {lang === 'en' ? 'Score:' : 'Điểm:'}{' '}
             <strong className={reachedGoal ? 'text-[#00552B] dark:text-[#C6A667]' : 'text-[#111111] dark:text-white'}>
@@ -309,11 +309,11 @@ export const HighlandHarvestGame: React.FC<HighlandHarvestGameProps> = ({
             / {targetScore}
           </span>
           <span>
-            {lang === 'en' ? 'Time:' : 'Thời gian:'}{' '}
+            {lang === 'en' ? 'Time:' : 'Còn:'}{' '}
             <strong className={timeLeft <= 5 && phase === 'playing' ? 'text-red-500' : ''}>{timeLeft}s</strong>
           </span>
         </div>
-        <div className="text-[11px] font-medium text-[#202020]/70 dark:text-[#F1EFEA]/70">
+        <div className="text-[10px] sm:text-[11px] font-medium text-[#202020]/70 dark:text-[#F1EFEA]/70">
           🔴 +10 · 🟡 +25 · 🟢 -10 · 🪵 -20
         </div>
       </div>
@@ -332,20 +332,20 @@ export const HighlandHarvestGame: React.FC<HighlandHarvestGameProps> = ({
         />
 
         {phase === 'ready' && (
-          <div className="absolute inset-0 bg-black/55 backdrop-blur-[2px] flex flex-col items-center justify-center p-6 text-center text-white">
-            <Trophy className="w-10 h-10 text-[#C6A667] mb-2" />
-            <h4 className="font-serif text-xl font-bold mb-1">
+          <div className="absolute inset-0 bg-black/55 backdrop-blur-[2px] flex flex-col items-center justify-center p-3 sm:p-6 text-center text-white">
+            <Trophy className="w-7 h-7 sm:w-10 sm:h-10 text-[#C6A667] mb-1 sm:mb-2 shrink-0" />
+            <h4 className="font-serif text-base sm:text-xl font-bold mb-1">
               {lang === 'en' ? 'Highland Cherry Harvest' : 'Thu Hoạch Quả Chín Tây Nguyên'}
             </h4>
-            <p className="text-xs text-white/85 max-w-sm mb-4">
+            <p className="text-[11px] sm:text-xs text-white/85 max-w-sm mb-2.5 sm:mb-4 line-clamp-2 sm:line-clamp-none">
               {lang === 'en'
-                ? `Drag or use arrow keys to catch ripe cherries & golden beans. Score ${targetScore}+ in ${ROUND_SECONDS}s to unlock rewards!`
-                : `Di chuột / chạm kéo hoặc nhấn phím mũi tên để hứng quả đỏ (+10) & hạt vàng (+25). Đạt ${targetScore}+ điểm trong ${ROUND_SECONDS} giây để nhận quà!`}
+                ? `Catch ripe cherries (+10) & golden beans (+25). Reach ${targetScore}+ pts in ${ROUND_SECONDS}s!`
+                : `Hứng quả đỏ (+10) & hạt vàng (+25). Đạt ${targetScore}+ điểm trong ${ROUND_SECONDS}s để nhận quà!`}
             </p>
             <button
               type="button"
               onClick={startRound}
-              className="px-6 py-3 rounded-xl bg-[#00552B] hover:bg-[#003D25] text-white text-sm font-bold inline-flex items-center gap-2 shadow-lg cursor-pointer"
+              className="px-4 py-2 sm:px-6 sm:py-3 rounded-xl bg-[#00552B] hover:bg-[#003D25] text-white text-xs sm:text-sm font-bold inline-flex items-center gap-2 shadow-lg cursor-pointer min-h-[40px] sm:min-h-[44px]"
             >
               <Play className="w-4 h-4 text-[#C6A667]" />
               <span>{lang === 'en' ? 'Start 25s Sprint' : 'Bắt Đầu Hứng Hạt'}</span>
@@ -354,8 +354,8 @@ export const HighlandHarvestGame: React.FC<HighlandHarvestGameProps> = ({
         )}
 
         {phase === 'ended' && (
-          <div className="absolute inset-0 bg-black/70 backdrop-blur-sm flex flex-col items-center justify-center p-6 text-center text-white">
-            <div className="text-xs font-bold uppercase tracking-widest text-[#C6A667] mb-1">
+          <div className="absolute inset-0 bg-black/70 backdrop-blur-sm flex flex-col items-center justify-center p-3 sm:p-6 text-center text-white">
+            <div className="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-[#C6A667] mb-0.5 sm:mb-1">
               {reachedGoal
                 ? lang === 'en'
                   ? 'HARVEST GOAL ACHIEVED'
@@ -364,32 +364,32 @@ export const HighlandHarvestGame: React.FC<HighlandHarvestGameProps> = ({
                   ? 'ALMOST THERE'
                   : 'CHƯA ĐỦ CHỈ TIÊU'}
             </div>
-            <div className="font-serif text-3xl font-bold tabular-nums mb-1">{score} pts</div>
-            <p className="text-xs text-white/80 mb-4">
+            <div className="font-serif text-2xl sm:text-3xl font-bold tabular-nums mb-0.5 sm:mb-1">{score} pts</div>
+            <p className="text-[11px] sm:text-xs text-white/80 mb-2.5 sm:mb-4 line-clamp-2 sm:line-clamp-none">
               {reachedGoal
                 ? lang === 'en'
-                  ? `You cleared the ${targetScore}-point target! Claim your reward now.`
-                  : `Bạn đã vượt mốc ${targetScore} điểm! Nhận phần thưởng ngay bên dưới.`
+                  ? `You cleared ${targetScore} pts! Claim your reward now.`
+                  : `Vượt mốc ${targetScore} điểm! Nhận phần thưởng ngay.`
                 : lang === 'en'
-                  ? `You needed ${targetScore} points. Try again—practice runs are unlimited!`
-                  : `Cần đạt từ ${targetScore} điểm trở lên để mở khóa quà. Chơi lại miễn phí không giới hạn!`}
+                  ? `Need ${targetScore} pts. Try again free!`
+                  : `Cần ${targetScore}+ điểm để mở quà. Thử lại miễn phí!`}
             </p>
-            <div className="flex flex-wrap items-center justify-center gap-2.5">
+            <div className="flex flex-wrap items-center justify-center gap-2">
               {reachedGoal && !claimed && (
                 !isSignedIn ? (
                   <>
                     <button
                       type="button"
                       onClick={() => handleClaim(false)}
-                      className="px-4 py-2.5 rounded-xl bg-[#C6A667] text-[#111111] text-xs font-bold inline-flex items-center gap-1.5 cursor-pointer"
+                      className="px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-xl bg-[#C6A667] text-[#111111] text-xs font-bold inline-flex items-center gap-1.5 cursor-pointer"
                     >
-                      <Sparkles className="w-4 h-4" />
+                      <Sparkles className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                       <span>{lang === 'en' ? 'Preview Prize' : 'Xem Thử Quà'}</span>
                     </button>
                     <button
                       type="button"
                       onClick={onRequireLogin}
-                      className="px-4 py-2.5 rounded-xl bg-white/15 hover:bg-white/25 text-white text-xs font-bold cursor-pointer"
+                      className="px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-xl bg-white/15 hover:bg-white/25 text-white text-xs font-bold cursor-pointer"
                     >
                       {lang === 'en' ? 'Sign In to Claim' : 'Đăng nhập Nhận Quà'}
                     </button>
@@ -399,17 +399,17 @@ export const HighlandHarvestGame: React.FC<HighlandHarvestGameProps> = ({
                     type="button"
                     disabled={claiming}
                     onClick={() => handleClaim(false)}
-                    className="px-5 py-2.5 rounded-xl bg-[#C6A667] hover:bg-[#b59454] text-[#111111] text-xs font-bold inline-flex items-center gap-1.5 cursor-pointer"
+                    className="px-4 py-2 sm:px-5 sm:py-2.5 rounded-xl bg-[#C6A667] hover:bg-[#b59454] text-[#111111] text-xs font-bold inline-flex items-center gap-1.5 cursor-pointer"
                   >
                     <Gift className="w-4 h-4" />
-                    <span>{claiming ? '...' : lang === 'en' ? 'Claim Harvest Reward' : 'Nhận Quà Mùa Vụ'}</span>
+                    <span>{claiming ? '...' : lang === 'en' ? 'Claim Reward' : 'Nhận Quà Mùa Vụ'}</span>
                   </button>
                 ) : (
                   <button
                     type="button"
                     disabled={claiming || userPoints < costPts}
                     onClick={() => handleClaim(true)}
-                    className="px-5 py-2.5 rounded-xl bg-[#C6A667] text-[#111111] text-xs font-bold inline-flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
+                    className="px-4 py-2 sm:px-5 sm:py-2.5 rounded-xl bg-[#C6A667] text-[#111111] text-xs font-bold inline-flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
                   >
                     <Coins className="w-4 h-4" />
                     <span>{lang === 'en' ? `Claim (-${costPts} pts)` : `Nhận Quà (-${costPts} điểm)`}</span>
@@ -419,7 +419,7 @@ export const HighlandHarvestGame: React.FC<HighlandHarvestGameProps> = ({
               <button
                 type="button"
                 onClick={startRound}
-                className="px-4 py-2.5 rounded-xl bg-white/15 hover:bg-white/25 text-white text-xs font-bold inline-flex items-center gap-1.5 cursor-pointer"
+                className="px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-xl bg-white/15 hover:bg-white/25 text-white text-xs font-bold inline-flex items-center gap-1.5 cursor-pointer"
               >
                 <RotateCcw className="w-3.5 h-3.5" />
                 <span>{lang === 'en' ? 'Play Again' : 'Chơi Lại'}</span>
@@ -437,7 +437,7 @@ export const HighlandHarvestGame: React.FC<HighlandHarvestGameProps> = ({
           onTouchEnd={() => { keysRef.current.left = false; }}
           onMouseDown={() => { keysRef.current.left = true; }}
           onMouseUp={() => { keysRef.current.left = false; }}
-          className="w-16 h-12 rounded-xl bg-[#00552B] text-white flex items-center justify-center active:scale-95"
+          className="w-24 h-11 rounded-xl bg-[#00552B] text-white flex items-center justify-center active:scale-95 touch-manipulation select-none"
           aria-label="Move Left"
         >
           <ChevronLeft className="w-6 h-6" />
@@ -448,7 +448,7 @@ export const HighlandHarvestGame: React.FC<HighlandHarvestGameProps> = ({
           onTouchEnd={() => { keysRef.current.right = false; }}
           onMouseDown={() => { keysRef.current.right = true; }}
           onMouseUp={() => { keysRef.current.right = false; }}
-          className="w-16 h-12 rounded-xl bg-[#00552B] text-white flex items-center justify-center active:scale-95"
+          className="w-24 h-11 rounded-xl bg-[#00552B] text-white flex items-center justify-center active:scale-95 touch-manipulation select-none"
           aria-label="Move Right"
         >
           <ChevronRight className="w-6 h-6" />

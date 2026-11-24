@@ -204,7 +204,7 @@ function AppLayout() {
       <RoarPreloader />
       <Header />
       <Breadcrumb />
-      <main className="flex-1">
+      <main className="flex-1 min-w-0 w-full">
         <Routes>
           <Route path="/">{renderPublicRoutes()}</Route>
           <Route path="/vi">{renderPublicRoutes()}</Route>

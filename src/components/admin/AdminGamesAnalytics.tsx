@@ -18,6 +18,7 @@ import type { GameAnalyticsResponse, GameKey } from '../../lib/gamesCatalog';
 
 const SHORT_GAME_LABELS: Record<GameKey, string> = {
   wheel: 'Vòng Quay',
+  blockblast: 'Block Blast',
   shake: 'Lắc Máy',
   fortune: 'Xin Xăm',
   quiz: 'Gu 7 Cá Tính',

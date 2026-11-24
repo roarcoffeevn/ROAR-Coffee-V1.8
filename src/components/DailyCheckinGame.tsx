@@ -65,11 +65,11 @@ export const DailyCheckinGame: React.FC<{ onRewardClaimed?: () => void }> = ({ o
   const todayReward = schedule[activeDay - 1] || schedule[0];
 
   return (
-    <div className="rounded-2xl bg-white dark:bg-[#16221C] border border-[#00552B]/20 dark:border-[#C6A667]/30 p-5 sm:p-6 space-y-4 shadow-sm">
+    <div className="rounded-2xl bg-white dark:bg-[#16221C] border border-[#00552B]/20 dark:border-[#C6A667]/30 p-4 sm:p-6 space-y-4 shadow-sm w-full min-w-0 overflow-hidden">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-        <div className="space-y-1">
+        <div className="space-y-1 min-w-0">
           <div className="inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-[0.14em] text-[#00552B] dark:text-[#C6A667]">
-            <CalendarCheck2 className="w-4 h-4" />
+            <CalendarCheck2 className="w-4 h-4 shrink-0" />
             <span>{t('GAME ĐIỂM DANH HÀNG NGÀY · NHẬN ĐIỂM & QUÀ ROAR', 'DAILY CHECK-IN GAME · EARN POINTS & GIFTS')}</span>
           </div>
           <p className="text-xs text-[#202020]/70 dark:text-[#F1EFEA]/70">
@@ -80,7 +80,7 @@ export const DailyCheckinGame: React.FC<{ onRewardClaimed?: () => void }> = ({ o
           </p>
         </div>
 
-        <div className="flex items-center gap-2.5 shrink-0">
+        <div className="flex flex-wrap items-center gap-2 shrink-0">
           <div className="px-3 py-1.5 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-700 dark:text-amber-300 text-xs font-bold inline-flex items-center gap-1.5">
             <Flame className="w-4 h-4 text-amber-500" />
             <span>

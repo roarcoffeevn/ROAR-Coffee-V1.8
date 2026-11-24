@@ -149,38 +149,38 @@ export const FortuneStickGame: React.FC<FortuneStickGameProps> = ({
     : null;
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-3 sm:space-y-5">
       {/* Header Status */}
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <div className="flex items-center gap-2.5 text-xs text-[#202020]/75 dark:text-[#F1EFEA]/75">
+      <div className="flex flex-wrap items-center justify-between gap-2 sm:gap-3">
+        <div className="flex items-center gap-2 text-[11px] sm:text-xs text-[#202020]/75 dark:text-[#F1EFEA]/75 min-w-0">
           {isSignedIn ? (
-            <span>
+            <span className="truncate">
               {canFree
                 ? lang === 'en'
-                  ? `Free draws today: ${remainingFreeToday}`
-                  : `Lượt gieo quẻ miễn phí hôm nay: ${remainingFreeToday}`
+                  ? `Free draws: ${remainingFreeToday}`
+                  : `Lượt gieo miễn phí: ${remainingFreeToday}`
                 : lang === 'en'
-                  ? `Extra draw cost: ${costPts} pts`
-                  : `Đổi ${costPts} điểm ROAR để gieo quẻ tiếp`}
+                  ? `Cost: ${costPts} pts`
+                  : `Đổi ${costPts} điểm`}
             </span>
           ) : (
-            <span>
+            <span className="truncate">
               {lang === 'en'
-                ? 'Demo mode · Sign in to save fortune rewards'
-                : 'Chế độ gieo thử · Đăng nhập để lưu lộc thật'}
+                ? 'Demo mode'
+                : 'Gieo thử'}
             </span>
           )}
           <span aria-hidden="true">·</span>
-          <span className="inline-flex items-center gap-1 text-[#00552B] dark:text-[#C6A667] font-semibold">
+          <span className="inline-flex items-center gap-1 text-[#00552B] dark:text-[#C6A667] font-semibold whitespace-nowrap shrink-0">
             <Smartphone className="w-3.5 h-3.5" />
-            <span>{lang === 'en' ? 'Shake or click cylinder' : 'Lắc máy hoặc bấm ống xăm'}</span>
+            <span>{lang === 'en' ? 'Shake or tap' : 'Lắc hoặc bấm'}</span>
           </span>
         </div>
 
         <button
           type="button"
           onClick={toggleMute}
-          className="p-1.5 rounded-lg border border-[#202020]/15 dark:border-white/15 hover:bg-black/5 dark:hover:bg-white/5 cursor-pointer"
+          className="p-1.5 rounded-lg border border-[#202020]/15 dark:border-white/15 hover:bg-black/5 dark:hover:bg-white/5 cursor-pointer shrink-0"
           aria-label="Toggle Sound"
         >
           {muted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4 text-[#00552B] dark:text-[#C6A667]" />}
@@ -188,17 +188,17 @@ export const FortuneStickGame: React.FC<FortuneStickGameProps> = ({
       </div>
 
       {/* Main Cylinder + Drawn Fortune Card */}
-      <div className="rounded-2xl bg-[#0D261A] text-white border border-[#C6A667]/35 p-6 sm:p-8 flex flex-col items-center space-y-6">
+      <div className="rounded-2xl bg-[#0D261A] text-white border border-[#C6A667]/35 p-4 sm:p-8 flex flex-col items-center space-y-3.5 sm:space-y-6">
         {!drawnSlip ? (
           <>
             <div className="text-center space-y-1 max-w-md">
-              <p className="text-xs uppercase tracking-[0.2em] text-[#C6A667] font-bold">
+              <p className="text-[11px] sm:text-xs uppercase tracking-[0.18em] text-[#C6A667] font-bold">
                 {lang === 'en' ? 'ROAR DAILY FORTUNE RITUAL' : 'GIEO QUẺ BẢN LĨNH ĐẦU NGÀY'}
               </p>
-              <p className="text-xs text-white/75">
+              <p className="text-[11px] sm:text-xs text-white/75 leading-snug">
                 {lang === 'en'
-                  ? 'Clear your mind and tap the bamboo cylinder below to draw your numbered coffee stick.'
-                  : 'Tĩnh tâm chọn một nhịp thở, nhấn nút hoặc lắc điện thoại để rút thẻ xăm may mắn.'}
+                  ? 'Tap the bamboo cylinder below or shake your phone to draw your fortune stick.'
+                  : 'Nhấn nút hoặc lắc điện thoại để rút thẻ xăm may mắn.'}
               </p>
             </div>
 
@@ -207,7 +207,7 @@ export const FortuneStickGame: React.FC<FortuneStickGameProps> = ({
               type="button"
               disabled={shaking || blockedNoPoints}
               onClick={() => drawFortuneStick(isSignedIn && !canFree)}
-              className="w-44 h-52 flex items-center justify-center cursor-pointer disabled:cursor-not-allowed focus:outline-none"
+              className="w-32 h-36 sm:w-44 sm:h-52 flex items-center justify-center cursor-pointer disabled:cursor-not-allowed focus:outline-none touch-manipulation"
               style={{
                 transform: shaking ? 'rotate(-14deg) translateY(-6px)' : 'rotate(0deg)',
                 transition: 'transform 160ms cubic-bezier(0.16, 1, 0.3, 1)',
@@ -281,7 +281,7 @@ export const FortuneStickGame: React.FC<FortuneStickGameProps> = ({
                 type="button"
                 disabled={shaking}
                 onClick={() => drawFortuneStick(isSignedIn && !canFree)}
-                className="px-6 py-3 rounded-xl bg-[#C6A667] hover:bg-[#b59454] text-[#111111] text-sm font-bold inline-flex items-center gap-2 shadow-lg cursor-pointer whitespace-nowrap disabled:opacity-60"
+                className="px-5 py-2.5 sm:px-6 sm:py-3 rounded-xl bg-[#C6A667] hover:bg-[#b59454] text-[#111111] text-xs sm:text-sm font-bold inline-flex items-center gap-2 shadow-lg cursor-pointer whitespace-nowrap disabled:opacity-60 min-h-[44px]"
               >
                 {isSignedIn && !canFree ? <Coins className="w-4 h-4" /> : <Sparkles className="w-4 h-4" />}
                 <span>
@@ -306,7 +306,7 @@ export const FortuneStickGame: React.FC<FortuneStickGameProps> = ({
           </>
         ) : (
           /* Revealed Fortune Slip Result */
-          <div className="w-full max-w-lg rounded-2xl bg-[#F8F5EF] dark:bg-[#14201A] text-[#202020] dark:text-[#F1EFEA] border-2 border-[#C6A667] p-6 space-y-4 text-left">
+          <div className="w-full max-w-lg rounded-2xl bg-[#F8F5EF] dark:bg-[#14201A] text-[#202020] dark:text-[#F1EFEA] border-2 border-[#C6A667] p-4 sm:p-6 space-y-3 sm:space-y-4 text-left">
             <div className="flex items-start justify-between gap-3 pb-3 border-b border-[#C6A667]/30">
               <div>
                 <div className="text-[11px] font-extrabold uppercase tracking-[0.18em] text-[#8C6D32] dark:text-[#C6A667]">

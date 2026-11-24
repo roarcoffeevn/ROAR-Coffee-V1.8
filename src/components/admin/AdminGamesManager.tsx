@@ -29,6 +29,7 @@ import { AdminGamesAnalytics } from './AdminGamesAnalytics';
 
 const GAME_LABELS: Record<GameKey, string> = {
   wheel: 'Vòng Quay May Mắn',
+  blockblast: 'ROAR Block Blast · Xếp Khối',
   shake: 'Lắc Điện Thoại Săn Quà',
   fortune: 'Xin Xăm Cà Phê Đầu Ngày',
   quiz: 'Trắc Nghiệm Gu 7 Cá Tính',
